@@ -1,0 +1,44 @@
+# Complete Guide to Full-Stack Development
+
+**This is a placeholder file for demonstration purposes.**
+
+## About This eBook
+
+This comprehensive guide covers:
+
+1. Frontend Development
+   - React Fundamentals
+   - Next.js Best Practices
+   - TypeScript Integration
+   - Responsive Design
+
+2. Backend Development
+   - Node.js Development
+   - API Design
+   - Database Management
+   - Authentication & Security
+
+3. DevOps & Deployment
+   - CI/CD Pipelines
+   - Cloud Deployment
+   - Monitoring & Analytics
+   - Performance Optimization
+
+4. Best Practices
+   - Code Organization
+   - Testing Strategies
+   - Documentation
+   - Team Collaboration
+
+## Download Instructions
+
+To implement a real PDF download:
+1. Replace this file with an actual PDF
+2. Update the file path in the download handlers
+3. Consider using a proper file serving solution
+
+---
+
+**Author:** Yasharth Sonker
+**Website:** https://yasharthsonker.com
+**Contact:** hello@yasharthsonkar.com
