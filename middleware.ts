@@ -7,7 +7,6 @@ export default withAuth(
     const isAdminRoute = req.nextUrl.pathname.startsWith("/admin");
     const isLoginPage = req.nextUrl.pathname === "/admin/login";
 
-    // If user is on login page and has valid token, redirect to dashboard
     if (isLoginPage && token) {
       return NextResponse.redirect(new URL("/admin/dashboard", req.url));
     }
