@@ -4,12 +4,9 @@ const withPWA = require('next-pwa')({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === 'development',
-  buildExcludes: [/middleware-manifest\.json$/],
-  publicExcludes: ['!robots.txt', '!sitemap.xml'],
 })
 
 const nextConfig: NextConfig = {
-  output: 'export',
   images: {
     unoptimized: true,
     remotePatterns: [

@@ -6,10 +6,13 @@ import Link from 'next/link';
 import { Image } from '@/components/ui/image';
 import WhatsAppChat from '@/components/WhatsAppChat';
 import ClientOnly from '@/components/ClientOnly';
+import Navigation from '@/components/navigation';
+import Footer from '@/components/footer';
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#B7AEA3]">
+      <Navigation />
       {/* Hero Section - Enhanced and Enlarged */}
       <section className="w-full max-w-[120rem] mx-auto px-6 py-24 lg:py-40">
         <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-center">
@@ -643,7 +646,7 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
-
+      <Footer />
       {/* WhatsApp Chat Component */}
       <ClientOnly>
         <WhatsAppChat />
