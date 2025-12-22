@@ -6,6 +6,7 @@ import { Mail, Phone, MapPin, Send, Github, Linkedin, Instagram, MessageCircle }
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import Navigation from '@/components/navigation';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -64,6 +65,7 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-[#B7AEA3]">
+      <Navigation />
       {/* Hero Section */}
       <section className="w-full max-w-[100rem] mx-auto px-6 py-20 lg:py-32">
         <motion.div
