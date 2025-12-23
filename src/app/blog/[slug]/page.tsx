@@ -12,13 +12,14 @@ export async function generateStaticParams() {
 }
 
 interface BlogPostPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-export default function BlogPostPage({ params }: BlogPostPageProps) {
-  const { slug } = params;
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+  const resolved = await params;
+  const { slug } = resolved;
   const post = staticBlogPosts.find(p => p.slug === slug);
 
   if (!post || !post.isPublished) {

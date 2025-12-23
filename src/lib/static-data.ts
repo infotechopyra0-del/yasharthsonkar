@@ -4,8 +4,7 @@ import type { Experience, Skills, Project, Service, BlogPost } from '@/types';
 export const staticProfessionalExperiences: Experience[] = [
   {
     _id: '1',
-    company: 'OpyraInfotech',
-    companyOrInstitution: 'OpyraInfotech',
+    institutionName: 'OpyraInfotech',
     position: 'Digital Marketing Agency Founder',
     title: 'Digital Marketing Agency Founder',
     duration: '2016 - Present',
@@ -18,8 +17,7 @@ export const staticProfessionalExperiences: Experience[] = [
   },
   {
     _id: '2',
-    company: 'Locotraq',
-    companyOrInstitution: 'Locotraq',
+    institutionName: 'Locotraq',
     position: 'GPS Components Supplier',
     title: 'GPS Components Supplier',
     duration: '2018 - Present',
@@ -32,8 +30,7 @@ export const staticProfessionalExperiences: Experience[] = [
   },
   {
     _id: '3',
-    company: 'Gold Interio',
-    companyOrInstitution: 'Gold Interio',
+    institutionName: 'Gold Interio',
     position: 'Modular Kitchen Specialist',
     title: 'Modular Kitchen Specialist',
     duration: '2019 - Present',
@@ -46,8 +43,7 @@ export const staticProfessionalExperiences: Experience[] = [
   },
   {
     _id: '4',
-    company: 'Opyra AI',
-    companyOrInstitution: 'Opyra AI',
+    institutionName: 'Opyra AI',
     position: 'Digital Agency Founder',
     title: 'Digital Agency Founder',
     duration: '2021 - Present',
@@ -60,8 +56,7 @@ export const staticProfessionalExperiences: Experience[] = [
   },
   {
     _id: '5',
-    company: 'Occult 369',
-    companyOrInstitution: 'Occult 369',
+    institutionName: 'Occult 369',
     position: 'Founder & Spiritual Consultant',
     title: 'Founder & Spiritual Consultant',
     duration: '2025 - Present',
@@ -74,8 +69,7 @@ export const staticProfessionalExperiences: Experience[] = [
   },
   {
     _id: '6',
-    company: 'Hotel Shri Vishwanath',
-    companyOrInstitution: 'Hotel Shri Vishwanath',
+    institutionName: 'Hotel Shri Vishwanath',
     position: 'Hospitality Business Owner',
     title: 'Hospitality Business Owner',
     duration: '2025 - Present',
@@ -92,8 +86,7 @@ export const staticProfessionalExperiences: Experience[] = [
 export const staticAcademicExperiences: Experience[] = [
   {
     _id: '7',
-    company: 'High School',
-    companyOrInstitution: 'High School',
+    institutionName: 'High School',
     position: '10th Grade (High School)',
     title: '10th Grade (High School)',
     duration: '2005 - 2006',
@@ -107,8 +100,7 @@ export const staticAcademicExperiences: Experience[] = [
   },
   {
     _id: '8',
-    company: 'Senior Secondary School',
-    companyOrInstitution: 'Senior Secondary School',
+    institutionName: 'Senior Secondary School',
     position: '12th Grade (Senior Secondary)',
     title: '12th Grade (Senior Secondary)',
     duration: '2007 - 2008',
@@ -122,8 +114,7 @@ export const staticAcademicExperiences: Experience[] = [
   },
   {
     _id: '9',
-    company: 'Central University of Haryana (GGU)',
-    companyOrInstitution: 'Central University of Haryana (GGU)',
+    institutionName: 'Central University of Haryana (GGU)',
     position: 'B.Tech Information Technology',
     title: 'B.Tech Information Technology',
     duration: '2009 - 2013',
@@ -137,8 +128,7 @@ export const staticAcademicExperiences: Experience[] = [
   },
   {
     _id: '10',
-    company: 'AKTU',
-    companyOrInstitution: 'AKTU (Dr. A.P.J. Abdul Kalam Technical University)',
+    institutionName: 'AKTU (Dr. A.P.J. Abdul Kalam Technical University)',
     position: 'MBA IT in Finance',
     title: 'MBA IT in Finance',
     duration: '2013 - 2015',

@@ -40,34 +40,9 @@ export default function AdminSidebar() {
     },
     {
       icon: Package,
-      label: 'Products',
-      href: '/admin/dashboard/products',
+      label: 'About',
+      href: '/admin/dashboard/about',
     },
-    {
-      icon: Code,
-      label: 'Services',
-      href: '/admin/dashboard/services',
-    },
-    {
-      icon: FolderOpen,
-      label: 'Portfolio',
-      href: '/admin/dashboard/portfolio',
-    },
-    {
-      icon: FileText,
-      label: 'Quotes',
-      href: '/admin/dashboard/quotes',
-    },
-    {
-      icon: Users,
-      label: 'Contacts',
-      href: '/admin/dashboard/contacts',
-    },
-    {
-      icon: MessageSquare,
-      label: 'Consultations',
-      href: '/admin/dashboard/consultations',
-    }
   ];
 
   const handleLogout = async () => {

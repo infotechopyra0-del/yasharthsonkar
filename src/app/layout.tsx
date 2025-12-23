@@ -17,6 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  // Base URL used to resolve absolute URLs for Open Graph / Twitter images
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   title: "Yasharth Sonker | Full Stack Developer, AI & Web Engineer",
   description:
     "Welcome to the portfolio of Yasharth Sonker — a Full Stack Developer and AI Enthusiast specializing in Next.js, TypeScript, Tailwind CSS, and modern web solutions. Discover top projects, professional achievements, and innovative digital work.",

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Navigation from '@/components/navigation';
+import Footer from '@/components/footer';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -390,6 +391,7 @@ export default function ContactPage() {
           </motion.div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }

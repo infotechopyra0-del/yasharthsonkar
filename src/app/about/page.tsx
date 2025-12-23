@@ -1,14 +1,68 @@
-'use client';
+"use client";
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, Code, Brain } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { staticProfessionalExperiences, staticAcademicExperiences, staticSkills } from '@/lib/static-data';
+import Navigation from '@/components/navigation';
+import Footer from '@/components/footer';
+
+const useCoreExpertise = () => {
+  const [items, setItems] = useState<any[]>([]);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchData = async () => {
+      try {
+        const res = await fetch('/api/admin/about/core-expertise');
+        if (!res.ok) throw new Error(`Failed to fetch core expertise: ${res.status}`);
+        const data = await res.json();
+        if (mounted) setItems(data || []);
+      } catch (err) {
+        console.error('Error loading core expertise:', err);
+      }
+    };
+    fetchData();
+    return () => { mounted = false; };
+  }, []);
+
+  return items;
+};
+
+const journeyHighlights = [
+  {
+    id: 1,
+    period: "2005 - 2015",
+    title: "Foundation Years",
+    description:
+      "Built a strong academic foundation through high school, senior secondary, and pursued B.Tech in Information Technology followed by MBA IT in Finance. These formative years shaped my analytical thinking and technical understanding.",
+    tags: ["Academic Excellence", "Technical Foundation"],
+  },
+  {
+    id: 2,
+    period: "2016 - Present",
+    title: "Entrepreneurial Spirit",
+    description:
+      "Founded my first digital marketing agency (OpraInfotech), ventured into GPS technology supply chain (Locotraq), and established modular kitchen expertise (Gold Interio). Each venture taught valuable lessons in business operations and market dynamics.",
+    tags: ["Digital Marketing", "Technology Supply", "Design & Manufacturing"],
+  },
+  {
+    id: 3,
+    period: "2021 - Present",
+    title: "AI & Digital Innovation",
+    description:
+      "Launched Opyra AI focusing on digital solutions, founded Occult369 for spiritual consulting with predictive analytics, and established Hotel Shri Vishwanath in Varanasi.",
+    tags: ["AI Solutions", "Spiritual Tech", "Hospitality"],
+  },
+];
+
 
 export default function AboutPage() {
   const professionalExperiences = staticProfessionalExperiences;
   const academicExperiences = staticAcademicExperiences;
   const skills = staticSkills;
+  const coreExpertise = useCoreExpertise();
   const loading = false;
 
   const containerVariants = {
@@ -43,6 +97,7 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen bg-[#B7AEA3]">
+      <Navigation />
       {/* Hero Section */}
       <section className="w-full max-w-[100rem] mx-auto px-6 py-20 lg:py-32">
         <motion.div
@@ -55,7 +110,7 @@ export default function AboutPage() {
             About Me
           </h1>
           <p className="font-paragraph text-lg lg:text-xl text-[#000000]/80 max-w-3xl mx-auto leading-relaxed">
-            Passionate about creating digital solutions that make a difference. 
+            Passionate about creating digital solutions that make a difference.
             With expertise spanning full-stack development, AI integration, and strategic digital planning.
           </p>
         </motion.div>
@@ -74,9 +129,10 @@ export default function AboutPage() {
                 alt="Yasharth Sonker - Professional headshot"
                 className="w-full h-full object-cover"
                 width={600}
+                height={750}
               />
             </div>
-            
+
             <div className="bg-[#1A1A1A] p-8 text-center">
               <h3 className="font-heading text-2xl text-[#FFFFFF] mb-4">
                 Digital Innovation Expert
@@ -98,23 +154,23 @@ export default function AboutPage() {
               <h2 className="font-heading text-3xl lg:text-4xl text-[#000000]">
                 Crafting Tomorrow&apos;s Digital Landscape
               </h2>
-              
+
               <div className="space-y-4 font-paragraph text-base lg:text-lg text-[#000000] leading-relaxed">
                 <p>
-                  With over five years of experience in the digital realm, I specialize in creating 
-                  innovative solutions that bridge the gap between cutting-edge technology and 
+                  With over five years of experience in the digital realm, I specialize in creating
+                  innovative solutions that bridge the gap between cutting-edge technology and
                   practical business needs.
                 </p>
-                
+
                 <p>
-                  My journey began with a fascination for how technology can solve real-world problems. 
-                  Today, I work at the intersection of full-stack development, artificial intelligence, 
-                  and strategic digital planning to deliver solutions that not only meet current needs 
+                  My journey began with a fascination for how technology can solve real-world problems.
+                  Today, I work at the intersection of full-stack development, artificial intelligence,
+                  and strategic digital planning to deliver solutions that not only meet current needs
                   but anticipate future challenges.
                 </p>
-                
+
                 <p>
-                  I believe in the power of clean code, thoughtful design, and data-driven decisions 
+                  I believe in the power of clean code, thoughtful design, and data-driven decisions
                   to create experiences that truly matter to users and businesses alike.
                 </p>
               </div>
@@ -128,7 +184,7 @@ export default function AboutPage() {
                   Maintainable & Scalable
                 </p>
               </div>
-              
+
               <div className="text-center p-6 bg-[#D9D2C9]">
                 <Brain className="w-8 h-8 text-[#000000] mx-auto mb-3" />
                 <h4 className="font-heading text-lg text-[#000000] mb-2">AI Integration</h4>
@@ -142,8 +198,10 @@ export default function AboutPage() {
       </section>
 
       {/* Journey Highlights Section */}
-      <section className="w-full bg-[#000000] py-20">
+      <section className="w-full bg-black py-20">
         <div className="max-w-[100rem] mx-auto px-6">
+
+          {/* Heading */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -151,74 +209,55 @@ export default function AboutPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="font-heading text-4xl lg:text-5xl text-[#FFFFFF] mb-6">
+            <h2 className="font-heading text-4xl lg:text-5xl text-white mb-6">
               Journey Highlights
             </h2>
-            <p className="font-paragraph text-lg text-[#FFFFFF]/80 max-w-3xl mx-auto">
+            <p className="font-paragraph text-lg text-white/80 max-w-3xl mx-auto">
               Key milestones and achievements that have defined my path in technology and entrepreneurship
             </p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Early Beginnings */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="bg-[#1A1A1A] p-8 rounded-lg"
-            >
-              <div className="text-[#B7AEA3] text-sm font-medium mb-2">2005 - 2015</div>
-              <h3 className="font-heading text-xl text-[#FFFFFF] mb-4">Foundation Years</h3>
-              <p className="font-paragraph text-[#FFFFFF]/80 text-sm leading-relaxed mb-4">
-                Built a strong academic foundation through high school, senior secondary, and pursued B.Tech in Information Technology followed by MBA IT in Finance. These formative years shaped my analytical thinking and technical understanding.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="text-xs bg-[#B7AEA3] text-[#000000] px-2 py-1 rounded">Academic Excellence</span>
-                <span className="text-xs bg-[#B7AEA3] text-[#000000] px-2 py-1 rounded">Technical Foundation</span>
-              </div>
-            </motion.div>
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {journeyHighlights.map((item, index) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-[#1A1A1A] rounded-xl p-8 flex flex-col h-full"
+              >
+                {/* Period */}
+                <span className="text-[#B7AEA3] text-sm font-medium mb-2">
+                  {item.period}
+                </span>
 
-            {/* Entrepreneurial Growth */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="bg-[#1A1A1A] p-8 rounded-lg"
-            >
-              <div className="text-[#B7AEA3] text-sm font-medium mb-2">2016 - Present</div>
-              <h3 className="font-heading text-xl text-[#FFFFFF] mb-4">Entrepreneurial Spirit</h3>
-              <p className="font-paragraph text-[#FFFFFF]/80 text-sm leading-relaxed mb-4">
-                Founded my first digital marketing agency (OpraInfotech), ventured into GPS technology supply chain (Locotraq), and established modular kitchen expertise (Gold Interio). Each venture taught valuable lessons in business operations, client relations, and market dynamics.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="text-xs bg-[#B7AEA3] text-[#000000] px-2 py-1 rounded">Digital Marketing</span>
-                <span className="text-xs bg-[#B7AEA3] text-[#000000] px-2 py-1 rounded">Technology Supply</span>
-                <span className="text-xs bg-[#B7AEA3] text-[#000000] px-2 py-1 rounded">Design & Manufacturing</span>
-              </div>
-            </motion.div>
+                {/* Title */}
+                <h3 className="font-heading text-xl text-white mb-4">
+                  {item.title}
+                </h3>
 
-            {/* Current Innovation */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="bg-[#1A1A1A] p-8 rounded-lg"
-            >
-              <div className="text-[#B7AEA3] text-sm font-medium mb-2">2021 - Present</div>
-              <h3 className="font-heading text-xl text-[#FFFFFF] mb-4">AI & Digital Innovation</h3>
-              <p className="font-paragraph text-[#FFFFFF]/80 text-sm leading-relaxed mb-4">
-                Launched Opyra AI focusing on cutting-edge digital solutions, founded Occult369 for spiritual consulting with predictive analytics, and established Hotel Shri Vishwanath in Varanasi. Currently at the forefront of AI integration and digital transformation.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="text-xs bg-[#B7AEA3] text-[#000000] px-2 py-1 rounded">AI Solutions</span>
-                <span className="text-xs bg-[#B7AEA3] text-[#000000] px-2 py-1 rounded">Spiritual Tech</span>
-                <span className="text-xs bg-[#B7AEA3] text-[#000000] px-2 py-1 rounded">Hospitality</span>
-              </div>
-            </motion.div>
+                {/* Description */}
+                <p className="font-paragraph text-white/80 text-sm leading-relaxed mb-6 flex-grow">
+                  {item.description}
+                </p>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mt-auto">
+                  {item.tags.map((tag, i) => (
+                    <span
+                      key={i}
+                      className="text-xs bg-[#B7AEA3] text-black px-3 py-1 rounded-full font-medium"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
           </div>
+
         </div>
       </section>
 
@@ -293,89 +332,63 @@ export default function AboutPage() {
 
       {/* Skills & Expertise Overview */}
       <section className="w-full bg-[#B7AEA3] py-20">
-        <div className="max-w-[100rem] mx-auto px-6">
+        <div className="max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-10">
+
+          {/* Heading */}
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.7 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="font-heading text-4xl lg:text-5xl text-[#000000] mb-6">
+            <h2 className="font-heading text-4xl md:text-5xl text-black mb-6">
               Core Expertise
             </h2>
-            <p className="font-paragraph text-lg text-[#000000]/80 max-w-3xl mx-auto">
+            <p className="font-paragraph text-lg text-black/80 max-w-3xl mx-auto">
               A comprehensive skill set built through years of hands-on experience and continuous learning
             </p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-4 gap-6">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="bg-[#FFFFFF] p-6 rounded-lg text-center"
-            >
-              <div className="w-16 h-16 bg-[#000000] rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-[#FFFFFF] text-2xl">🚀</span>
-              </div>
-              <h3 className="font-heading text-lg text-[#000000] mb-2">Full-Stack Development</h3>
-              <p className="font-paragraph text-sm text-[#000000]/80">
-                End-to-end web application development with modern frameworks and best practices
-              </p>
-            </motion.div>
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {coreExpertise.map((item, index) => (
+              <motion.div
+                key={item._id ?? item.id ?? index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300
+                     flex flex-col h-full overflow-hidden text-center"
+              >
+                <div className="relative w-full h-40 bg-black overflow-hidden">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    priority={false}
+                  />
+                </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="bg-[#FFFFFF] p-6 rounded-lg text-center"
-            >
-              <div className="w-16 h-16 bg-[#000000] rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-[#FFFFFF] text-2xl">🤖</span>
-              </div>
-              <h3 className="font-heading text-lg text-[#000000] mb-2">AI Integration</h3>
-              <p className="font-paragraph text-sm text-[#000000]/80">
-                Implementing intelligent solutions with machine learning and predictive analytics
-              </p>
-            </motion.div>
+                {/* Content */}
+                <div className="p-6 flex flex-col flex-1">
+                  <h3 className="font-heading text-lg font-semibold text-black mb-3">
+                    {item.title}
+                  </h3>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="bg-[#FFFFFF] p-6 rounded-lg text-center"
-            >
-              <div className="w-16 h-16 bg-[#000000] rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-[#FFFFFF] text-2xl">📈</span>
-              </div>
-              <h3 className="font-heading text-lg text-[#000000] mb-2">Digital Strategy</h3>
-              <p className="font-paragraph text-sm text-[#000000]/80">
-                Strategic planning for digital transformation and business growth
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="bg-[#FFFFFF] p-6 rounded-lg text-center"
-            >
-              <div className="w-16 h-16 bg-[#000000] rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-[#FFFFFF] text-2xl">💼</span>
-              </div>
-              <h3 className="font-heading text-lg text-[#000000] mb-2">Business Operations</h3>
-              <p className="font-paragraph text-sm text-[#000000]/80">
-                End-to-end business management from startups to established enterprises
-              </p>
-            </motion.div>
+                  <p className="font-paragraph text-sm text-black/70 leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
+
 
       {/* Experience Section */}
       {(professionalExperiences.length > 0 || academicExperiences.length > 0) && (
@@ -414,8 +427,8 @@ export default function AboutPage() {
                       <Calendar className="w-4 h-4" />
                       <span className="font-paragraph text-sm">
                         {exp.startDate && new Date(exp.startDate).getFullYear()} - {
-                          exp.isCurrent ? 'Present' : 
-                          exp.endDate ? new Date(exp.endDate).getFullYear() : 'Present'
+                          exp.isCurrent ? 'Present' :
+                            exp.endDate ? new Date(exp.endDate).getFullYear() : 'Present'
                         }
                       </span>
                     </div>
@@ -426,17 +439,17 @@ export default function AboutPage() {
                       </div>
                     )}
                   </div>
-                  
+
                   <div className="md:col-span-3 space-y-3">
                     <div>
                       <h3 className="font-heading text-xl text-[#000000] mb-1">
                         {exp.title}
                       </h3>
                       <p className="font-paragraph text-[#000000]/80">
-                        {exp.companyOrInstitution}
+                        {exp.institutionName}
                       </p>
                     </div>
-                    
+
                     {exp.description && (
                       <p className="font-paragraph text-[#000000]/70 leading-relaxed">
                         {exp.description}
@@ -481,8 +494,8 @@ export default function AboutPage() {
                       <Calendar className="w-4 h-4" />
                       <span className="font-paragraph text-sm">
                         {exp.startDate && new Date(exp.startDate).getFullYear()} - {
-                          exp.isCurrent ? 'Present' : 
-                          exp.endDate ? new Date(exp.endDate).getFullYear() : 'Present'
+                          exp.isCurrent ? 'Present' :
+                            exp.endDate ? new Date(exp.endDate).getFullYear() : 'Present'
                         }
                       </span>
                     </div>
@@ -493,17 +506,17 @@ export default function AboutPage() {
                       </div>
                     )}
                   </div>
-                  
+
                   <div className="md:col-span-3 space-y-3">
                     <div>
                       <h3 className="font-heading text-xl text-[#000000] mb-1">
                         {exp.title}
                       </h3>
                       <p className="font-paragraph text-[#000000]/80">
-                        {exp.companyOrInstitution}
+                        {exp.institutionName ?? ''}
                       </p>
                     </div>
-                    
+
                     {exp.description && (
                       <p className="font-paragraph text-[#000000]/70 leading-relaxed">
                         {exp.description}
@@ -559,17 +572,17 @@ export default function AboutPage() {
                       />
                     </div>
                   )}
-                  
+
                   <h3 className="font-heading text-xl text-[#FFFFFF] group-hover:text-[#FFFFFF] mb-3">
                     {skill.skillName}
                   </h3>
-                  
+
                   {skill.description && (
                     <p className="font-paragraph text-[#FFFFFF]/80 group-hover:text-[#FFFFFF]/80 text-sm leading-relaxed">
                       {skill.description}
                     </p>
                   )}
-                  
+
                   {skill.proficiencyLevel && (
                     <div className="mt-4">
                       <div className="w-full bg-[#1A1A1A]-foreground/20 h-2 rounded-full overflow-hidden">
@@ -592,6 +605,7 @@ export default function AboutPage() {
           </div>
         </section>
       )}
+      <Footer />
     </div>
   );
 }

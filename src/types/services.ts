@@ -15,8 +15,7 @@ export type Services = Service;
 
 export interface Experience {
   _id: string;
-  company?: string;
-  companyOrInstitution?: string;
+  institutionName?: string;
   position: string;
   title?: string;
   duration: string;
