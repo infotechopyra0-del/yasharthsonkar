@@ -10,16 +10,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Image } from '@/components/ui/image';
 import {
   LayoutDashboard,
-  Code,
   FolderOpen,
   FileText,
-  Users,
   MessageSquare,
   LogOut,
   Sparkles,
   Menu,
   X,
   Package,
+  Briefcase,
+  Image as ImageIcon,
+  Home,
 } from 'lucide-react';
 
 export default function AdminSidebar() {
@@ -39,9 +40,39 @@ export default function AdminSidebar() {
       href: '/admin/dashboard',
     },
     {
+      icon: Home,
+      label: 'Home',
+      href: '/admin/dashboard/home',
+    },
+    {
+      icon: FolderOpen,
+      label: 'Projects',
+      href: '/admin/dashboard/projects',
+    },
+    {
+      icon: Briefcase,
+      label: 'Services',
+      href: '/admin/dashboard/services',
+    },
+    {
+      icon: ImageIcon,
+      label: 'Gallery',
+      href: '/admin/dashboard/gallery',
+    },
+    {
+      icon: FileText,
+      label: 'Blog',
+      href: '/admin/dashboard/blog',
+    },
+    {
       icon: Package,
       label: 'About',
       href: '/admin/dashboard/about',
+    },
+    {
+      icon: MessageSquare,
+      label: 'Contact',
+      href: '/admin/dashboard/contact',
     },
   ];
 
@@ -102,17 +133,17 @@ export default function AdminSidebar() {
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 h-full bg-[#1A1A1A]
+          fixed top-0 left-0 h-screen bg-[#1A1A1A]
           w-64 sm:w-72 shadow-2xl z-40 border-r-4 border-[#000000]
           transition-transform duration-300 ease-in-out
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}
       >
-        <div className="flex flex-col h-full overflow-hidden">
-          {/* Header - Fixed Height */}
-          <div className="shrink-0 p-4 sm:p-6 border-b-4 border-[#000000]">
+        <div className="flex flex-col h-full">
+          {/* Header - Compact */}
+          <div className="shrink-0 p-3 sm:p-4 border-b-4 border-[#000000]">
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="relative w-10 h-10 sm:w-12 sm:h-12 bg-[#B7AEA3] shadow-lg rounded overflow-hidden">
+              <div className="relative w-9 h-9 sm:w-10 sm:h-10 bg-[#B7AEA3] shadow-lg rounded overflow-hidden">
                 <Image
                   src="/images/MainLogo.jpg"
                   alt="Main Logo"
@@ -121,7 +152,7 @@ export default function AdminSidebar() {
                 />
               </div>
               <div>
-                <h1 className="text-xl sm:text-2xl font-black text-[#FFFFFF] tracking-tight">
+                <h1 className="text-lg sm:text-xl font-black text-[#FFFFFF] tracking-tight">
                   YasharthSonkar
                 </h1>
                 <p className="text-xs text-[#B7AEA3] font-semibold">Admin Portal</p>
@@ -129,9 +160,9 @@ export default function AdminSidebar() {
             </div>
           </div>
 
-          {/* Menu Items - Scrollable */}
-          <nav className="flex-1 overflow-y-auto py-4 px-3 sm:px-4 space-y-1 sm:space-y-2 scrollbar-hide">
-            {menuItems.map((item, index) => {
+          {/* Menu Items - Scrollable with hidden scrollbar */}
+          <nav className="flex-1 overflow-y-auto py-2 px-3 sm:px-4 space-y-1 scrollbar-hide">
+            {menuItems.map((item) => {
               const Icon = item.icon;
               const active = isActive(item.href);
 
@@ -141,7 +172,7 @@ export default function AdminSidebar() {
                   href={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`
-                    flex items-center gap-3 px-3 sm:px-4 py-2.5 sm:py-3.5 rounded-lg transition-all duration-300
+                    flex items-center gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all duration-300
                     ${active 
                       ? 'bg-[#B7AEA3] text-[#000000] shadow-lg border-l-4 border-[#000000]' 
                       : 'text-[#FFFFFF] hover:bg-[#FFFFFF]/10 hover:border-l-4 hover:border-[#B7AEA3]'
@@ -164,10 +195,10 @@ export default function AdminSidebar() {
             })}
           </nav>
 
-          {/* User Info & Logout - Fixed Bottom */}
-          <div className="shrink-0 p-3 sm:p-4 border-t-4 border-[#000000] space-y-2 sm:space-y-3">
+          {/* User Info & Logout - Compact Bottom */}
+          <div className="shrink-0 p-3 sm:p-4 border-t-4 border-[#000000] space-y-2">
             {/* User Info Badge */}
-            <div className="bg-[#FFFFFF]/5 backdrop-blur-sm px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-[#B7AEA3]/30">
+            <div className="bg-[#FFFFFF]/5 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-lg border border-[#B7AEA3]/30">
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-2 h-2 rounded-full bg-[#B7AEA3] animate-pulse shrink-0"></div>
                 <span className="text-[#B7AEA3] font-bold text-xs uppercase tracking-wider truncate">
@@ -182,7 +213,7 @@ export default function AdminSidebar() {
             {/* Logout Button */}
             <button
               onClick={handleLogout}
-              className="w-full flex items-center justify-center gap-2 sm:gap-3 bg-[#FFFFFF] hover:bg-[#D9D2C9] text-[#000000] px-3 sm:px-4 py-2.5 sm:py-3.5 rounded-lg transition-all duration-300 font-black shadow-lg hover:shadow-xl hover:scale-105"
+              className="w-full flex items-center justify-center gap-2 sm:gap-3 bg-[#FFFFFF] hover:bg-[#D9D2C9] text-[#000000] px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all duration-300 font-black shadow-lg hover:shadow-xl hover:scale-105"
             >
               <LogOut size={18} strokeWidth={2.5} className="shrink-0" />
               <span className="text-sm sm:text-base">Logout</span>
@@ -205,25 +236,6 @@ export default function AdminSidebar() {
         .scrollbar-hide {
           -ms-overflow-style: none;  /* IE and Edge */
           scrollbar-width: none;  /* Firefox */
-        }
-
-        /* Optional: Custom scrollbar for better UX */
-        .scrollbar-custom::-webkit-scrollbar {
-          width: 6px;
-        }
-
-        .scrollbar-custom::-webkit-scrollbar-track {
-          background: rgba(183, 174, 163, 0.1);
-          border-radius: 10px;
-        }
-
-        .scrollbar-custom::-webkit-scrollbar-thumb {
-          background: #B7AEA3;
-          border-radius: 10px;
-        }
-
-        .scrollbar-custom::-webkit-scrollbar-thumb:hover {
-          background: #D9D2C9;
         }
       `}</style>
     </>

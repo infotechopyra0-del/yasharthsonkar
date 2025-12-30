@@ -141,27 +141,7 @@ export const staticBlogPosts: BlogPost[] = [
     title: 'The Future of AI in Web Development',
     slug: 'future-of-ai-in-web-development',
     excerpt: 'Explore how artificial intelligence is revolutionizing web development, from automated code generation to intelligent user experiences.',
-    content: `Artificial Intelligence is transforming the landscape of web development in unprecedented ways. As we move deeper into 2025, AI tools are becoming indispensable for developers worldwide.
-
-## AI-Powered Code Generation
-
-Modern AI tools like GitHub Copilot and ChatGPT are changing how we write code. These tools can:
-- Generate boilerplate code instantly
-- Suggest optimizations and best practices
-- Debug complex issues
-- Translate code between different languages
-
-## Intelligent User Experiences
-
-AI is enabling more personalized and intuitive user experiences:
-- Predictive user interfaces that adapt to user behavior
-- Smart content recommendations
-- Automated accessibility improvements
-- Real-time language translation
-
-## The Road Ahead
-
-The future of web development will be heavily influenced by AI advancements. Developers who embrace these tools early will have a significant advantage in building more efficient, scalable, and user-friendly applications.`,
+    content: `Artificial Intelligence is transforming the landscape of web development in unprecedented ways. As we move deeper into 2025, AI tools are becoming indispensable for developers worldwide.`,
     featuredImage: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop&crop=center',
     author: 'Yasharth Sonker',
     publishDate: '2025-01-15',
@@ -352,31 +332,7 @@ TypeScript ecosystem:
     title: 'SEO Best Practices for Modern Websites',
     slug: 'seo-best-practices-modern-websites',
     excerpt: 'Master the latest SEO techniques and strategies to improve your website\'s search engine rankings and organic traffic in 2025.',
-    content: `Search Engine Optimization continues to evolve with changing algorithms and user behaviors. Here are the essential SEO practices for 2025.
-
-## Technical SEO Fundamentals
-
-Core technical requirements:
-- Core Web Vitals optimization
-- Mobile-first indexing
-- HTTPS implementation
-- Structured data markup
-
-## Content Strategy
-
-Creating SEO-friendly content:
-- E-A-T (Expertise, Authoritativeness, Trustworthiness)
-- User intent optimization
-- Topic clustering
-- Long-form vs short-form content
-
-## Local SEO
-
-For businesses with physical presence:
-- Google My Business optimization
-- Local citation building
-- Review management
-- Location-based content creation`,
+    content: `Search Engine Optimization continues to evolve with changing algorithms and user behaviors. Here are the essential SEO practices for 2025.`,
     featuredImage: 'https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=800&h=600&fit=crop&crop=center',
     author: 'Yasharth Sonker',
     publishDate: '2024-12-20',

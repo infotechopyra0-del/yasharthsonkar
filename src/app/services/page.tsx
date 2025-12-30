@@ -1,9 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check, Navigation } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { staticServices } from '@/lib/static-data';
+import Footer from '@/components/footer';
 
 export default function ServicesPage() {
   const services = staticServices;
@@ -41,8 +42,11 @@ export default function ServicesPage() {
 
   return (
     <div className="min-h-screen bg-[#B7AEA3]">
+      {/* Navigation */}
+      <Navigation />
+
       {/* Hero Section */}
-      <section className="w-full max-w-[100rem] mx-auto px-6 py-20 lg:py-32">
+      <section className="w-full max-w-400 mx-auto px-6 py-20 lg:py-32">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -73,7 +77,7 @@ export default function ServicesPage() {
                 className="group"
               >
                 {/* Service Image */}
-                <div className="aspect-[16/10] overflow-hidden mb-8 relative">
+                <div className="aspect-16/10 overflow-hidden mb-8 relative">
                   {service.serviceImage ? (
                     <Image
                       src={service.serviceImage}
@@ -124,7 +128,7 @@ export default function ServicesPage() {
                     )}
                   </div>
 
-                  {/* Service Features (if description contains bullet points) */}
+                  {/* Service Features */}
                   {service.description && service.description.includes('•') && (
                     <div className="space-y-3">
                       <h3 className="font-heading text-lg text-[#000000]">
@@ -133,7 +137,7 @@ export default function ServicesPage() {
                       <div className="space-y-2">
                         {service.description.split('•').filter((item: string) => item.trim()).map((feature: string, featureIndex: number) => (
                           <div key={featureIndex} className="flex items-start gap-3">
-                            <Check className="w-5 h-5 text-[#000000] mt-0.5 flex-shrink-0" />
+                            <Check className="w-5 h-5 text-[#000000] mt-0.5 shrink-0" />
                             <span className="font-paragraph text-[#000000]/80 text-sm">
                               {feature.trim()}
                             </span>
@@ -182,7 +186,7 @@ export default function ServicesPage() {
 
       {/* Process Section */}
       <section className="w-full bg-[#1A1A1A] py-20">
-        <div className="max-w-[100rem] mx-auto px-6">
+        <div className="max-w-400 mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -253,7 +257,7 @@ export default function ServicesPage() {
 
       {/* CTA Section */}
       <section className="w-full py-20">
-        <div className="max-w-[100rem] mx-auto px-6 text-center">
+        <div className="max-w-400 mx-auto px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -288,6 +292,9 @@ export default function ServicesPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

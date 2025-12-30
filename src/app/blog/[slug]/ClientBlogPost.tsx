@@ -5,6 +5,8 @@ import { Calendar, Clock, Tag, ArrowLeft, Download, FileText } from 'lucide-reac
 import Link from 'next/link';
 import { Image } from '@/components/ui/image';
 import type { BlogPost } from '@/types';
+import Navigation from '@/components/navigation';
+import Footer from '@/components/footer';
 
 interface ClientBlogPostProps {
   post: BlogPost;
@@ -24,6 +26,9 @@ export default function ClientBlogPost({ post, relatedPosts }: ClientBlogPostPro
 
   return (
     <div className="min-h-screen bg-[#B7AEA3] pt-24">
+      {/*Navigation*/}
+      <Navigation />
+
       {/* Back Navigation */}
       <section className="w-full py-8">
         <div className="max-w-4xl mx-auto px-6">
@@ -86,7 +91,7 @@ export default function ClientBlogPost({ post, relatedPosts }: ClientBlogPostPro
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="aspect-[16/9] overflow-hidden rounded-2xl shadow-2xl"
+            className="aspect-video overflow-hidden rounded-2xl shadow-2xl"
           >
             <Image
               src={post.featuredImage}
@@ -121,9 +126,9 @@ export default function ClientBlogPost({ post, relatedPosts }: ClientBlogPostPro
               />
             </div>
 
-            {/* Download Button for eBook Posts */}
+            {/* Download Button For eBook Posts */}
             {isEbookPost && (
-              <div className="mt-12 p-8 bg-gradient-to-r from-[#B7AEA3] to-[#D9D2C9] rounded-xl text-center">
+              <div className="mt-12 p-8 bg-linear-to-r from-[#B7AEA3] to-[#D9D2C9] rounded-xl text-center">
                 <div className="flex items-center justify-center mb-4">
                   <div className="w-12 h-12 bg-[#000000] rounded-full flex items-center justify-center">
                     <FileText className="w-6 h-6 text-[#FFFFFF]" />
@@ -174,7 +179,7 @@ export default function ClientBlogPost({ post, relatedPosts }: ClientBlogPostPro
                     transition={{ duration: 0.6, delay: 0.1 * index }}
                     className="bg-[#FFFFFF] rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group"
                   >
-                    <div className="aspect-[16/10] overflow-hidden">
+                    <div className="aspect-16/10 overflow-hidden">
                       <Image
                         src={relatedPost.featuredImage}
                         alt={relatedPost.title}
@@ -207,6 +212,9 @@ export default function ClientBlogPost({ post, relatedPosts }: ClientBlogPostPro
           </div>
         </section>
       )}
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

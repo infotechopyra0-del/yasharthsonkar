@@ -10,7 +10,6 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
 
-    // Delete cookie
     response.cookies.delete('admin-token');
 
     return response;

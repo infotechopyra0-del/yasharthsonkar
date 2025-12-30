@@ -19,7 +19,6 @@ const useProfessionalExperiences = () => {
         const data = await res.json();
         if (mounted) setItems(Array.isArray(data) ? data : (data || []));
       } catch (err) {
-        console.error('Error loading professional experiences:', err);
       }
     };
     fetchData();
@@ -41,7 +40,6 @@ const useCoreCompetencies = () => {
         const data = await res.json();
         if (mounted) setItems(Array.isArray(data) ? data : (data || []));
       } catch (err) {
-        console.error('Error loading core competencies:', err);
       }
     };
     fetchData();
@@ -63,7 +61,6 @@ const useCoreExpertise = () => {
         const data = await res.json();
         if (mounted) setItems(data || []);
       } catch (err) {
-        console.error('Error loading core expertise:', err);
       }
     };
     fetchData();
@@ -85,7 +82,6 @@ const useJourneyHighlights = () => {
         const data = await res.json();
         if (mounted) setItems(data || []);
       } catch (err) {
-        console.error('Error loading journey highlights:', err);
       }
     };
     fetchData();
@@ -108,7 +104,6 @@ const useAcademicExperiences = () => {
         const data = await res.json();
         if (mounted) setItems(Array.isArray(data) ? data : (data || []));
       } catch (err) {
-        console.error('Error loading academic experiences:', err);
       }
     };
     fetchData();
@@ -117,7 +112,6 @@ const useAcademicExperiences = () => {
 
   return items;
 };
-
 
 export default function AboutPage() {
   const professionalExperiences = useProfessionalExperiences();

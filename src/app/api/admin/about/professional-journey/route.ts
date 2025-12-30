@@ -10,7 +10,6 @@ export async function GET(request: NextRequest) {
     const professionalJourney = await ProfessionalJourney.find().sort({ startDate: -1, createdAt: -1 });
     return NextResponse.json(professionalJourney, { status: 200 });
   } catch (error: any) {
-    console.error('GET Error:', error);
     return NextResponse.json(
       { success: false, error: error.message || 'Failed to fetch professional journey' },
       { status: 500 }
@@ -27,8 +26,6 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
     const rawData = await request.json();
-
-    console.log('Received data:', rawData);
 
     const data = {
       companyName: rawData.companyName,
@@ -51,8 +48,6 @@ export async function POST(request: NextRequest) {
     }
 
     if (missing.length > 0) {
-      console.error('Missing fields:', missing);
-      console.error('Data received:', data);
       return NextResponse.json(
         { 
           success: false, 
@@ -71,11 +66,7 @@ export async function POST(request: NextRequest) {
       { success: true, data: professionalJourney },
       { status: 201 }
     );
-  } catch (error: any) {
-    console.error('POST Error:', error);
-    console.error('Error details:', error.errors); // Mongoose validation errors
-    
-    // Handle Mongoose validation errors specifically
+  } catch (error: any) {  
     if (error.name === 'ValidationError') {
       const validationErrors = Object.keys(error.errors).map(key => ({
         field: key,

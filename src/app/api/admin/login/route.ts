@@ -9,7 +9,6 @@ export async function POST(request: NextRequest) {
     
     const { email, password } = await request.json();
 
-    // Validate input
     if (!email || !password) {
       return NextResponse.json(
         { 
@@ -20,7 +19,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Find admin
     const admin = await Admin.findOne({ email: email.toLowerCase() });
 
     if (!admin) {
@@ -34,7 +32,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if admin is active
     if (!admin.isActive) {
       return NextResponse.json(
         { 
@@ -46,7 +43,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify password
     const isPasswordValid = await admin.comparePassword(password);
 
     if (!isPasswordValid) {
@@ -60,11 +56,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Update last login
     admin.lastLogin = new Date();
     await admin.save();
 
-    // Create JWT token
     const token = jwt.sign(
       { 
         id: admin._id, 
@@ -75,7 +69,6 @@ export async function POST(request: NextRequest) {
       { expiresIn: '7d' }
     );
 
-    // Create response with cookie
     const response = NextResponse.json(
       {
         success: true,
@@ -89,19 +82,17 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
 
-    // Set cookie
     response.cookies.set('admin-token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+      maxAge: 60 * 60 * 24 * 7,
       path: '/'
     });
 
     return response;
 
   } catch (error) {
-    console.error('Login error:', error);
     return NextResponse.json(
       { 
         success: false, 

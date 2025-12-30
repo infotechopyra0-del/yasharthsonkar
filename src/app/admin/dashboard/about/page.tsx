@@ -58,7 +58,6 @@ export default function AboutAdminPage() {
       if (!res.ok) throw new Error('Failed to fetch');
       const data = await res.json();
       setItems(data);
-      toast.success('Data loaded! 📊');
     } catch (error) {
       toast.error('Failed to load data');
     } finally {
@@ -121,7 +120,6 @@ export default function AboutAdminPage() {
       toast.success('Deleted! 🗑️', { id: loadingToast });
       fetchItems();
     } catch (error) {
-      console.error(error);
       toast.error('Failed to delete', { id: loadingToast });
     } finally {
       setDeleteId(null);
@@ -157,7 +155,6 @@ export default function AboutAdminPage() {
         skillImage: url,
       });
     } catch (err) {
-      console.error('Upload failed', err);
       alert('Image upload failed');
     }
   };
@@ -454,7 +451,6 @@ export default function AboutAdminPage() {
                           setCurrentItem({ ...currentItem, image: url, imagePublicId: publicId });
                           toast.success("Image uploaded successfully!", { id: loadingToast });
                         } catch (err) {
-                          console.error(err);
                           toast.error("Image upload failed!", { id: loadingToast });
                         }
                       }}

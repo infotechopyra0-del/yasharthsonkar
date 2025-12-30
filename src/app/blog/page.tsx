@@ -5,12 +5,13 @@ import { Calendar, Clock, Tag, Download, FileText, ExternalLink } from 'lucide-r
 import Link from 'next/link';
 import { Image } from '@/components/ui/image';
 import { staticBlogPosts } from '@/lib/static-data';
+import Navigation from '@/components/navigation';
+import Footer from '@/components/footer';
 
 export default function BlogPage() {
   const publishedPosts = staticBlogPosts.filter(post => post.isPublished);
 
   const handleDownloadEbook = () => {
-    // Create a download link for the eBook
     const link = document.createElement('a');
     link.href = '/files/Complete-Guide-Full-Stack-Development.txt';
     link.download = 'Complete-Guide-Full-Stack-Development.txt';
@@ -19,9 +20,11 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-[#B7AEA3] pt-24">
+      {/* Navigation */}
+      <Navigation />
       {/* Hero Section */}
       <section className="w-full py-16 lg:py-24">
-        <div className="max-w-[100rem] mx-auto px-6">
+        <div className="max-w-400 mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -32,7 +35,7 @@ export default function BlogPage() {
               Tech Blog & Resources
             </h1>
             <p className="font-paragraph text-xl text-[#000000]/80 max-w-3xl mx-auto leading-relaxed">
-              Insights, tutorials, and resources on web development, AI, digital marketing, 
+              Insights, tutorials, and resources on web development, AI, digital marketing,
               and the latest technology trends to help you stay ahead in the digital world.
             </p>
           </motion.div>
@@ -42,7 +45,7 @@ export default function BlogPage() {
       {/* Featured Post */}
       {publishedPosts.length > 0 && (
         <section className="w-full pb-16">
-          <div className="max-w-[100rem] mx-auto px-6">
+          <div className="max-w-400 mx-auto px-6">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -54,7 +57,7 @@ export default function BlogPage() {
               </h2>
               <div className="bg-[#FFFFFF] rounded-2xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300 group">
                 <div className="grid lg:grid-cols-2 gap-0">
-                  <div className="aspect-[16/10] lg:aspect-auto overflow-hidden">
+                  <div className="aspect-16/10 lg:aspect-auto overflow-hidden">
                     <Image
                       src={publishedPosts[0].featuredImage}
                       alt={publishedPosts[0].title}
@@ -108,7 +111,7 @@ export default function BlogPage() {
 
       {/* Blog Posts Grid */}
       <section className="w-full pb-16">
-        <div className="max-w-[100rem] mx-auto px-6">
+        <div className="max-w-400 mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -127,7 +130,7 @@ export default function BlogPage() {
                   transition={{ duration: 0.6, delay: 0.1 * index }}
                   className="bg-[#FFFFFF] rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group flex flex-col h-full"
                 >
-                  <div className="aspect-[16/10] overflow-hidden">
+                  <div className="aspect-16/10 overflow-hidden">
                     <Image
                       src={post.featuredImage}
                       alt={post.title}
@@ -136,7 +139,7 @@ export default function BlogPage() {
                       height={250}
                     />
                   </div>
-                  <div className="p-6 flex flex-col flex-grow">
+                  <div className="p-6 flex flex-col grow">
                     <div className="flex items-center gap-3 mb-3">
                       <span className="px-2 py-1 bg-[#1A1A1A] text-[#FFFFFF] text-xs rounded">
                         {post.category}
@@ -146,10 +149,10 @@ export default function BlogPage() {
                         {post.readTime} min
                       </div>
                     </div>
-                    <h3 className="font-heading text-xl text-[#000000] mb-3 group-hover:text-[#1A1A1A] transition-colors line-clamp-2 min-h-[3.5rem]">
+                    <h3 className="font-heading text-xl text-[#000000] mb-3 group-hover:text-[#1A1A1A] transition-colors line-clamp-2 min-h-14">
                       {post.title}
                     </h3>
-                    <p className="font-paragraph text-[#000000]/70 text-sm mb-4 line-clamp-3 leading-relaxed flex-grow min-h-[4.5rem]">
+                    <p className="font-paragraph text-[#000000]/70 text-sm mb-4 line-clamp-3 leading-relaxed grow min-h-18">
                       {post.excerpt}
                     </p>
                     <div className="flex items-center justify-between mt-auto">
@@ -174,14 +177,14 @@ export default function BlogPage() {
 
       {/* Free eBook Section */}
       <section className="w-full bg-[#1A1A1A] py-16">
-        <div className="max-w-[100rem] mx-auto px-6">
+        <div className="max-w-400 mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
             className="text-center"
           >
-            <div className="bg-gradient-to-r from-[#B7AEA3] to-[#D9D2C9] rounded-2xl p-8 lg:p-12">
+            <div className="bg-linear-to-r from-[#B7AEA3] to-[#D9D2C9] rounded-2xl p-8 lg:p-12">
               <div className="max-w-4xl mx-auto">
                 <div className="flex items-center justify-center mb-6">
                   <div className="w-16 h-16 bg-[#000000] rounded-full flex items-center justify-center">
@@ -192,10 +195,10 @@ export default function BlogPage() {
                   Free eBook: Complete Guide to Full-Stack Development
                 </h2>
                 <p className="font-paragraph text-xl text-[#000000]/80 mb-8 max-w-2xl mx-auto leading-relaxed">
-                  Download our comprehensive 200+ page guide covering everything from React and Next.js 
+                  Download our comprehensive 200+ page guide covering everything from React and Next.js
                   to backend development, databases, and deployment strategies.
                 </p>
-                
+
                 <div className="grid md:grid-cols-3 gap-6 mb-8">
                   <div className="text-center">
                     <div className="w-12 h-12 bg-[#000000] rounded-full flex items-center justify-center mx-auto mb-3">
@@ -229,7 +232,7 @@ export default function BlogPage() {
                   <Download className="w-5 h-5" />
                   Download Free eBook
                 </motion.button>
-                
+
                 <p className="font-paragraph text-sm text-[#000000]/60 mt-4">
                   No email required • Instant download • Text format (PDF coming soon)
                 </p>
@@ -241,7 +244,7 @@ export default function BlogPage() {
 
       {/* Newsletter Section */}
       <section className="w-full py-16">
-        <div className="max-w-[100rem] mx-auto px-6">
+        <div className="max-w-400 mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -272,6 +275,9 @@ export default function BlogPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

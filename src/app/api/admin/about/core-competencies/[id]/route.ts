@@ -37,7 +37,7 @@ export async function PUT(
     const data = await request.json();
     const resolvedParams = await params;
     const id = resolvedParams.id as string;
-    // Fetch existing to determine if we need to remove previous Cloudinary image
+   
     const existing = await CoreCompetency.findById(id);
     if (!existing) {
       return NextResponse.json(
@@ -49,12 +49,10 @@ export async function PUT(
     const existingPublicId = getPublicIdFromUrl(existing.skillImage as any);
     const newPublicId = getPublicIdFromUrl(data?.skillImage as any);
 
-    // If image changed (and previous existed), delete previous from Cloudinary
     if (existingPublicId && existingPublicId !== newPublicId) {
       try {
         await cloudinary.uploader.destroy(existingPublicId);
       } catch (err) {
-        console.error('Failed to delete old Cloudinary image:', err);
       }
     }
 
@@ -102,13 +100,11 @@ export async function DELETE(
       );
     }
 
-    // If competency had an image, delete it from Cloudinary
     const publicId = getPublicIdFromUrl(competency.skillImage as any);
     if (publicId) {
       try {
         await cloudinary.uploader.destroy(publicId);
       } catch (err) {
-        console.error('Failed to delete Cloudinary image for competency:', err);
       }
     }
 

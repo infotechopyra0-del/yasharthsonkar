@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { staticProjects } from '@/lib/static-data';
+import Navigation from '@/components/navigation';
+import Footer from '@/components/footer';
 
 export default function ProjectsPage() {
   const projects = staticProjects;
@@ -41,8 +43,11 @@ export default function ProjectsPage() {
 
   return (
     <div className="min-h-screen bg-[#B7AEA3]">
+      {/* Navigation */}
+      <Navigation />
+
       {/* Hero Section */}
-      <section className="w-full max-w-[100rem] mx-auto px-6 py-20 lg:py-32">
+      <section className="w-full max-w-400 mx-auto px-6 py-20 lg:py-32">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -73,7 +78,7 @@ export default function ProjectsPage() {
                 className="group"
               >
                 {/* Project Image */}
-                <div className="aspect-[16/10] overflow-hidden mb-8 bg-[#1A1A1A]">
+                <div className="aspect-16/10 overflow-hidden mb-8 bg-[#1A1A1A]">
                   {project.projectImage ? (
                     <Image
                       src={project.projectImage}
@@ -154,7 +159,7 @@ export default function ProjectsPage() {
 
       {/* Call to Action */}
       <section className="w-full bg-[#1A1A1A] py-20">
-        <div className="max-w-[100rem] mx-auto px-6 text-center">
+        <div className="max-w-400 mx-auto px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -189,6 +194,9 @@ export default function ProjectsPage() {
           </motion.div>
         </div>
       </section>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

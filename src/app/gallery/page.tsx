@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { Image } from '@/components/ui/image';
 import { Eye, Heart, Share2, Download, ZoomIn } from 'lucide-react';
 import { useState } from 'react';
+import Navigation from '@/components/navigation';
+import Footer from '@/components/footer';
 
 interface GalleryItem {
   id: number;
@@ -11,8 +13,6 @@ interface GalleryItem {
   category: string;
   image: string;
   description: string;
-  likes: number;
-  views: number;
 }
 
 export default function GalleryPage() {
@@ -34,8 +34,6 @@ export default function GalleryPage() {
       category: 'projects',
       image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=800&fit=crop',
       description: 'Clean, scalable web application architecture design',
-      likes: 65,
-      views: 420,
     },
     {
       id: 2,
@@ -43,8 +41,6 @@ export default function GalleryPage() {
       category: 'projects',
       image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=800&fit=crop',
       description: 'Comprehensive digital strategy implementation for enterprises',
-      likes: 89,
-      views: 567,
     },
     {
       id: 3,
@@ -52,8 +48,6 @@ export default function GalleryPage() {
       category: 'projects',
       image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=800&fit=crop',
       description: 'Scalable cloud architecture for modern applications',
-      likes: 54,
-      views: 398,
     },
     {
       id: 4,
@@ -61,8 +55,6 @@ export default function GalleryPage() {
       category: 'team',
       image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=800&fit=crop',
       description: 'Creative brainstorming session with the development team',
-      likes: 23,
-      views: 156,
     },
     {
       id: 5,
@@ -70,8 +62,6 @@ export default function GalleryPage() {
       category: 'events',
       image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=800&fit=crop',
       description: 'Speaking at the Annual AI & Web Development Summit',
-      likes: 67,
-      views: 445,
     },
     {
       id: 6,
@@ -79,17 +69,13 @@ export default function GalleryPage() {
       category: 'workspace',
       image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=800&fit=crop',
       description: 'Clean and productive development environment',
-      likes: 89,
-      views: 623,
     },
     {
       id: 7,
       title: 'Next.js Application',
       category: 'projects',
       image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=800&fit=crop',
-      description: 'Full-stack e-commerce platform with advanced features',
-      likes: 54,
-      views: 398,
+      description: 'Full-stack e-commerce platform with advanced features'
     },
     {
       id: 8,
@@ -97,8 +83,6 @@ export default function GalleryPage() {
       category: 'events',
       image: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&h=800&fit=crop',
       description: 'Successful launch of our latest AI solution',
-      likes: 91,
-      views: 567,
     },
     {
       id: 9,
@@ -106,8 +90,6 @@ export default function GalleryPage() {
       category: 'workspace',
       image: 'https://images.unsplash.com/photo-1527689368864-3a821dbccc34?w=800&h=800&fit=crop',
       description: 'Multi-monitor setup for efficient coding',
-      likes: 43,
-      views: 289,
     },
     {
       id: 10,
@@ -204,9 +186,7 @@ export default function GalleryPage() {
       title: 'Startup Pitch',
       category: 'events',
       image: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&h=800&fit=crop',
-      description: 'Presenting innovative solutions to potential investors',
-      likes: 84,
-      views: 532,
+      description: 'Presenting innovative solutions to potential investors'
     },
     {
       id: 21,
@@ -241,8 +221,6 @@ export default function GalleryPage() {
       category: 'events',
       image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=800&fit=crop',
       description: 'Recognition for excellence in digital innovation',
-      likes: 96,
-      views: 678,
     },
     {
       id: 25,
@@ -250,8 +228,6 @@ export default function GalleryPage() {
       category: 'projects',
       image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=800&fit=crop',
       description: 'RESTful API design and development best practices',
-      likes: 42,
-      views: 289,
     },
     {
       id: 26,
@@ -259,8 +235,6 @@ export default function GalleryPage() {
       category: 'projects',
       image: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=800&h=800&fit=crop',
       description: 'User-centered design methodology and prototyping',
-      likes: 67,
-      views: 445,
     },
     {
       id: 27,
@@ -268,8 +242,6 @@ export default function GalleryPage() {
       category: 'events',
       image: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&h=800&fit=crop',
       description: 'Annual technology conference with industry leaders',
-      likes: 78,
-      views: 523,
     },
     {
       id: 28,
@@ -277,8 +249,6 @@ export default function GalleryPage() {
       category: 'team',
       image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=800&fit=crop',
       description: 'Scrum master facilitating daily standup meeting',
-      likes: 35,
-      views: 198,
     },
     {
       id: 29,
@@ -286,8 +256,6 @@ export default function GalleryPage() {
       category: 'projects',
       image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=800&fit=crop',
       description: 'Performance tuning and database architecture optimization',
-      likes: 51,
-      views: 334,
     },
     {
       id: 30,
@@ -295,8 +263,6 @@ export default function GalleryPage() {
       category: 'events',
       image: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&h=800&fit=crop',
       description: 'International conference on emerging technologies',
-      likes: 89,
-      views: 612,
     },
   ];
 
@@ -325,8 +291,11 @@ export default function GalleryPage() {
 
   return (
     <div className="min-h-screen bg-[#B7AEA3]">
+      {/* Navigation Bar */}
+      <Navigation />
+
       {/* Hero Section */}
-      <section className="w-full max-w-[100rem] mx-auto px-6 py-20 lg:py-32">
+      <section className="w-full max-w-400 mx-auto px-6 py-20 lg:py-32">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -387,23 +356,12 @@ export default function GalleryPage() {
               </div>
               
               {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute inset-0 bg-linear-to-t from-[#000000]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="absolute bottom-0 left-0 right-0 p-4">
                   <h3 className="font-heading text-lg text-[#FFFFFF] mb-2">{item.title}</h3>
                   <p className="font-paragraph text-sm text-[#FFFFFF]/80 mb-3">{item.description}</p>
                   
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4 text-[#FFFFFF]/80 text-xs">
-                      <span className="flex items-center gap-1">
-                        <Eye className="w-3 h-3" />
-                        {item.views}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Heart className="w-3 h-3" />
-                        {item.likes}
-                      </span>
-                    </div>
-                    
                     <button
                       onClick={() => setSelectedImage(item)}
                       className="flex items-center gap-1 bg-[#FFFFFF]/20 hover:bg-[#FFFFFF]/30 text-[#FFFFFF] px-3 py-1 rounded-full text-xs transition-colors"
@@ -487,34 +445,13 @@ export default function GalleryPage() {
             <div className="p-6">
               <h3 className="font-heading text-2xl text-[#000000] mb-2">{selectedImage.title}</h3>
               <p className="font-paragraph text-[#000000]/80 mb-4">{selectedImage.description}</p>
-              
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4 text-[#000000]/60 text-sm">
-                  <span className="flex items-center gap-1">
-                    <Eye className="w-4 h-4" />
-                    {selectedImage.views} views
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Heart className="w-4 h-4" />
-                    {selectedImage.likes} likes
-                  </span>
-                </div>
-                
-                <div className="flex gap-2">
-                  <button className="flex items-center gap-1 bg-[#000000] hover:bg-[#1A1A1A] text-[#FFFFFF] px-4 py-2 rounded-lg text-sm transition-colors">
-                    <Share2 className="w-4 h-4" />
-                    Share
-                  </button>
-                  <button className="flex items-center gap-1 bg-[#B7AEA3] hover:bg-[#B7AEA3]/80 text-[#000000] px-4 py-2 rounded-lg text-sm transition-colors">
-                    <Download className="w-4 h-4" />
-                    Download
-                  </button>
-                </div>
-              </div>
             </div>
           </motion.div>
         </motion.div>
       )}
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
