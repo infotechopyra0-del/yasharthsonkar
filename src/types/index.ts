@@ -2,6 +2,15 @@ export type { Project, Projects } from './projects';
 export type { Service, Services, Experience, Skill, Skills } from './services';
 
 // Blog Post Types
+// Categories for blog posts
+export type Category =
+  | 'Technology'
+  | 'Development'
+  | 'Resources'
+  | 'Marketing'
+  | 'AI & Machine Learning'
+  | 'Other';
+
 export interface BlogPost {
   _id: string;
   title: string;
@@ -13,7 +22,7 @@ export interface BlogPost {
   publishDate: string;
   readTime: number;
   tags: string[];
-  category: string;
+  category: Category;
   isPublished: boolean;
   seoTitle?: string;
   seoDescription?: string;

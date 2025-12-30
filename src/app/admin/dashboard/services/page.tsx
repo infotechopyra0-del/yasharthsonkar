@@ -6,8 +6,9 @@ import {
   Plus, Edit, Trash2, Save, X, RefreshCw, Sparkles,
   BarChart3, Zap, Image, Upload, Loader2
 } from 'lucide-react';
+import { toast } from 'sonner';
+import { uploadToCloudinary, deleteFromCloudinary } from '@/lib/cloudinary';
 
-// Service Type Definition
 interface Service {
   _id?: string;
   name: string;
@@ -50,42 +51,13 @@ export default function ServicesAdminPage() {
       setServices(data.services || []);
     } catch (error) {
       console.error('Error fetching services:', error);
-      alert('Failed to load services');
+      toast.error('Failed to load services');
     } finally {
       setLoading(false);
     }
   };
 
-  const uploadToCloudinary = async (file: File): Promise<{ url: string; publicId: string }> => {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', 'your_upload_preset'); // Replace with your Cloudinary preset
-    formData.append('folder', 'services');
-
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/your_cloud_name/image/upload`, // Replace with your cloud name
-      {
-        method: 'POST',
-        body: formData
-      }
-    );
-
-    if (!res.ok) throw new Error('Upload failed');
-    const data = await res.json();
-    return { url: data.secure_url, publicId: data.public_id };
-  };
-
-  const deleteFromCloudinary = async (publicId: string) => {
-    try {
-      await fetch('/api/admin/cloudinary/delete', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ publicId })
-      });
-    } catch (error) {
-      console.error('Error deleting from Cloudinary:', error);
-    }
-  };
+  // using shared cloudinary helpers from src/lib/cloudinary.ts
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -105,10 +77,10 @@ export default function ServicesAdminPage() {
         serviceImage: url,
         serviceImagePublicId: publicId
       });
-      alert('Image uploaded successfully!');
+      toast.success('Image uploaded successfully!');
     } catch (error) {
       console.error('Upload error:', error);
-      alert('Failed to upload image');
+      toast.error('Failed to upload image');
     } finally {
       setUploading(false);
     }
@@ -131,12 +103,12 @@ export default function ServicesAdminPage() {
       const data = await res.json();
       if (!data.success) throw new Error(data.error);
 
-      alert(isEdit ? 'Service updated successfully! ✅' : 'Service created successfully! 🎉');
+      toast.success(isEdit ? 'Service updated successfully! ✅' : 'Service created successfully! 🎉');
       setEditDialogOpen(false);
       fetchServices();
     } catch (error: any) {
       console.error('Save error:', error);
-      alert(error.message || 'Failed to save service');
+      toast.error(error.message || 'Failed to save service');
     }
   };
 
@@ -162,11 +134,11 @@ export default function ServicesAdminPage() {
 
       if (!res.ok) throw new Error('Failed to delete');
 
-      alert('Service deleted successfully! 🗑️');
+      toast.success('Service deleted successfully! 🗑️');
       fetchServices();
     } catch (error) {
       console.error('Delete error:', error);
-      alert('Failed to delete service');
+      toast.error('Failed to delete service');
     } finally {
       setDeleteId(null);
       setIsDeleteDialogOpen(false);
@@ -475,71 +447,6 @@ export default function ServicesAdminPage() {
                       </button>
                     </div>
                   )}
-                </div>
-              </div>
-
-              {/* Gradient Colors */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-bold mb-2 text-[#000000]">
-                    Gradient Start Color
-                  </label>
-                  <input
-                    type="color"
-                    value={currentService.gradientStartColor || '#1A1A1A'}
-                    onChange={(e) => setCurrentService({ ...currentService, gradientStartColor: e.target.value })}
-                    className="w-full h-12 border-2 border-[#000000]/20 rounded-md cursor-pointer"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold mb-2 text-[#000000]">
-                    Gradient End Color
-                  </label>
-                  <input
-                    type="color"
-                    value={currentService.gradientEndColor || '#B7AEA3'}
-                    onChange={(e) => setCurrentService({ ...currentService, gradientEndColor: e.target.value })}
-                    className="w-full h-12 border-2 border-[#000000]/20 rounded-md cursor-pointer"
-                  />
-                </div>
-              </div>
-
-              {/* Features */}
-              <div>
-                <label className="block text-sm font-bold mb-2 text-[#000000]">
-                  Key Features
-                </label>
-                <div className="flex flex-col sm:flex-row gap-2 mb-2">
-                  <input
-                    type="text"
-                    value={featureInput}
-                    onChange={(e) => setFeatureInput(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addFeature())}
-                    className="flex-1 px-3 sm:px-4 py-2 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
-                    placeholder="Add a feature and press Enter"
-                  />
-                  <button
-                    onClick={addFeature}
-                    className="w-full sm:w-auto px-4 py-2 bg-[#000000] text-[#FFFFFF] font-bold hover:bg-[#1A1A1A] rounded-md flex items-center justify-center gap-2"
-                  >
-                    <Plus size={18} />
-                    Add
-                  </button>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {(currentService.features || []).map((feature, i) => (
-                    <span
-                      key={i}
-                      className="px-2 sm:px-3 py-1 bg-[#D9D2C9] text-[#000000] text-xs sm:text-sm flex items-center gap-2 rounded-md"
-                    >
-                      {feature}
-                      <X
-                        size={14}
-                        className="cursor-pointer hover:text-red-600"
-                        onClick={() => removeFeature(feature)}
-                      />
-                    </span>
-                  ))}
                 </div>
               </div>
 

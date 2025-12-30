@@ -43,13 +43,11 @@ interface Blog {
 }
 
 const CATEGORIES = [
-    'Web Development',
-    'AI & Machine Learning',
-    'Digital Marketing',
     'Technology',
-    'Tutorial',
-    'Case Study',
-    'News',
+    'Development',
+    'Resources',
+    'Marketing',
+    'AI & Machine Learning',
     'Other'
 ];
 

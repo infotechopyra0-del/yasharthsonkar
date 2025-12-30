@@ -5,9 +5,6 @@ export interface IService extends Document {
   description: string;
   serviceImage?: string;
   serviceImagePublicId?: string;
-  gradientStartColor?: string;
-  gradientEndColor?: string;
-  features?: string[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -32,18 +29,6 @@ const ServiceSchema: Schema = new Schema(
       type: String,
       default: ''
     },
-    gradientStartColor: {
-      type: String,
-      default: '#1A1A1A'
-    },
-    gradientEndColor: {
-      type: String,
-      default: '#B7AEA3'
-    },
-    features: {
-      type: [String],
-      default: []
-    }
   },
   {
     timestamps: true

@@ -159,31 +159,7 @@ export const staticBlogPosts: BlogPost[] = [
     title: 'Building Scalable Next.js Applications',
     slug: 'building-scalable-nextjs-applications',
     excerpt: 'Learn the best practices for creating highly scalable and performant Next.js applications that can handle millions of users.',
-    content: `Next.js has become the go-to framework for building production-ready React applications. Here are the key strategies for building scalable Next.js apps.
-
-## Performance Optimization
-
-Key areas to focus on:
-- Image optimization with next/image
-- Code splitting and lazy loading
-- Server-side rendering vs Static Site Generation
-- API route optimization
-
-## Architecture Patterns
-
-Best practices for structuring large applications:
-- Feature-based folder structure
-- Shared component libraries
-- Custom hooks for business logic
-- Centralized state management
-
-## Deployment Strategies
-
-Modern deployment approaches:
-- Vercel edge functions
-- CDN optimization
-- Database connection pooling
-- Monitoring and analytics`,
+    content: `Next.js has become the go-to framework for building production-ready React applications. Here are the key strategies for building scalable Next.js apps.`,
     featuredImage: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=600&fit=crop&crop=center',
     author: 'Yasharth Sonker',
     publishDate: '2025-01-10',
@@ -201,36 +177,7 @@ Modern deployment approaches:
     title: 'Free eBook: Complete Guide to Full-Stack Development',
     slug: 'free-ebook-complete-guide-full-stack-development',
     excerpt: 'Download our comprehensive free eBook covering everything you need to know about full-stack development, from frontend to backend technologies.',
-    content: `Unlock the secrets of full-stack development with our comprehensive free eBook! This 200+ page guide covers everything from beginner concepts to advanced techniques.
-
-## What's Inside the eBook
-
-Comprehensive coverage includes:
-- Frontend development with React and Next.js
-- Backend development with Node.js and Python
-- Database design and management
-- DevOps and deployment strategies
-- Best practices and design patterns
-- Real-world project examples
-
-## Why Download This eBook?
-
-Perfect for:
-- Aspiring full-stack developers
-- Frontend developers looking to learn backend
-- Backend developers wanting to understand frontend
-- Students and career changers
-- Anyone looking to level up their development skills
-
-## Bonus Resources
-
-Includes:
-- Code examples and templates
-- Project starter kits
-- Resource links and references
-- Community access for questions
-
-**Download your free copy today and start your journey to becoming a full-stack developer!**`,
+    content: `Unlock the secrets of full-stack development with our comprehensive free eBook! This 200+ page guide covers everything from beginner concepts to advanced techniques.`,
     featuredImage: 'https://images.unsplash.com/photo-1544256718-3bcf237f3974?w=800&h=600&fit=crop&crop=center',
     author: 'Yasharth Sonker',
     publishDate: '2024-12-15',
@@ -248,31 +195,7 @@ Includes:
     title: 'Digital Marketing Strategies for 2025',
     slug: 'digital-marketing-strategies-2025',
     excerpt: 'Discover the most effective digital marketing strategies that will dominate in 2025, from AI-powered campaigns to personalized experiences.',
-    content: `The digital marketing landscape continues to evolve rapidly. Here are the strategies that will define success in 2025.
-
-## AI-Powered Marketing
-
-Artificial intelligence is revolutionizing marketing:
-- Predictive analytics for customer behavior
-- Automated content personalization
-- Intelligent ad targeting
-- Chatbots and conversational marketing
-
-## Video-First Content Strategy
-
-Video content dominance:
-- Short-form videos for social media
-- Interactive video experiences
-- Live streaming and real-time engagement
-- Video SEO optimization
-
-## Privacy-First Marketing
-
-Adapting to privacy changes:
-- First-party data collection strategies
-- Consent management platforms
-- Cookieless tracking alternatives
-- Transparent data usage practices`,
+    content: `The digital marketing landscape continues to evolve rapidly. Here are the strategies that will define success in 2025.`,
     featuredImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop&crop=center',
     author: 'Yasharth Sonker',
     publishDate: '2025-01-05',
@@ -290,31 +213,7 @@ Adapting to privacy changes:
     title: 'The Power of TypeScript in Modern Web Development',
     slug: 'typescript-modern-web-development',
     excerpt: 'Understanding why TypeScript has become essential for building maintainable and scalable web applications in the modern development landscape.',
-    content: `TypeScript has transformed from a nice-to-have to a must-have in modern web development. Here's why it's become indispensable.
-
-## Type Safety Benefits
-
-The core advantages of TypeScript:
-- Compile-time error detection
-- Enhanced IDE support and autocomplete
-- Better refactoring capabilities
-- Improved code documentation
-
-## Advanced TypeScript Features
-
-Leveraging powerful TypeScript features:
-- Generic types for reusable components
-- Union and intersection types
-- Conditional types
-- Template literal types
-
-## Integration with Modern Frameworks
-
-TypeScript ecosystem:
-- Next.js with TypeScript
-- React TypeScript patterns
-- Node.js TypeScript development
-- Testing with TypeScript`,
+    content: `TypeScript has transformed from a nice-to-have to a must-have in modern web development. Here's why it's become indispensable.`,
     featuredImage: 'https://images.unsplash.com/photo-1607706189992-eae578626c86?w=800&h=600&fit=crop&crop=center',
     author: 'Yasharth Sonker',
     publishDate: '2024-12-28',
