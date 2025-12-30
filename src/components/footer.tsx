@@ -11,10 +11,10 @@ export default function Footer() {
     { name: 'Services', path: '/services' },
     { name: 'Contact', path: '/contact' },
   ];
-
+  
   return (
     <footer className="bg-[#1A1A1A] text-[#FFFFFF] py-16">
-      <div className="max-w-[100rem] mx-auto px-6">
+      <div className="max-w-400 mx-auto px-6">
         <div className="grid md:grid-cols-3 gap-12">
           {/* Brand */}
           <div className="space-y-4">
@@ -87,7 +87,7 @@ export default function Footer() {
 
         <div className="border-t border-[#FFFFFF]/20 mt-12 pt-8 text-center">
           <p className="font-paragraph text-[#FFFFFF]/60">
-            © 2025 Yasharth Sonker. All rights reserved.
+            © 2026 Yasharth Sonker. All rights reserved.
           </p>
         </div>
       </div>

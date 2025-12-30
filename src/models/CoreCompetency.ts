@@ -1,52 +1,19 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface ICoreCompetency extends Document {
-  name: string;
   skillName: string;
-  category: string;
-  level: number;
-  proficiencyLevel: number;
   description?: string;
   skillImage?: string;
 }
 
 const CoreCompetencySchema = new Schema<ICoreCompetency>(
   {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-      maxlength: 100,
-    },
-
     skillName: {
       type: String,
       required: true,
       trim: true,
       maxlength: 100,
     },
-
-    category: {
-      type: String,
-      required: true,
-      trim: true,
-      maxlength: 50,
-    },
-
-    level: {
-      type: Number,
-      required: true,
-      min: 0,
-      max: 100,
-    },
-
-    proficiencyLevel: {
-      type: Number,
-      required: true,
-      min: 0,
-      max: 100,
-    },
-
     description: {
       type: String,
       trim: true,
@@ -65,7 +32,20 @@ const CoreCompetencySchema = new Schema<ICoreCompetency>(
 );
 
 const CoreCompetency =
-  mongoose.models.CoreCompetency ||
-  mongoose.model<ICoreCompetency>("CoreCompetency", CoreCompetencySchema);
+  ((): any => {
+    // In development with HMR, a previous model may be registered with an old schema.
+    // Delete any existing model to ensure the current schema is used.
+    try {
+      if (mongoose.models && mongoose.models.CoreCompetency) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        delete mongoose.models.CoreCompetency;
+      }
+    } catch (e) {
+      // ignore
+    }
+
+    return mongoose.models.CoreCompetency || mongoose.model<ICoreCompetency>('CoreCompetency', CoreCompetencySchema);
+  })();
 
 export default CoreCompetency;

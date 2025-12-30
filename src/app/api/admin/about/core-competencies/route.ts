@@ -6,7 +6,7 @@ import CoreCompetency from '@/models/CoreCompetency';
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
-    const competencies = await CoreCompetency.find().sort({ order: 1, createdAt: -1 });
+    const competencies = await CoreCompetency.find().sort({ skillName: 1 });
     return NextResponse.json(competencies, { status: 200 });
   } catch (error: any) {
     return NextResponse.json(
@@ -22,15 +22,25 @@ export async function POST(request: NextRequest) {
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
     await connectDB();
     const data = await request.json();
-    const competency = await CoreCompetency.create(data);
-    
-    return NextResponse.json(
-      { success: true, competency },
-      { status: 201 }
-    );
+    const normalized: any = {
+      skillName: data.skillName ?? '',
+      description: data.description ?? '',
+      skillImage: data.skillImage ?? ''
+    };
+
+    if (!normalized.skillName || String(normalized.skillName).trim() === '') {
+      return NextResponse.json({ success: false, error: 'Missing required field: skillName' }, { status: 400 });
+    }
+
+    const competency = await CoreCompetency.create({
+      skillName: String(normalized.skillName).trim(),
+      description: normalized.description || undefined,
+      skillImage: normalized.skillImage || undefined,
+    });
+
+    return NextResponse.json({ success: true, competency }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json(
       { success: false, error: error.message || 'Failed to create competency' },

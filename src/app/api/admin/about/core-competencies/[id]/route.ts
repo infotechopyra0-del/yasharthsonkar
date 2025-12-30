@@ -3,6 +3,24 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import connectDB from '@/lib/mongodb';
 import CoreCompetency from '@/models/CoreCompetency';
+import { v2 as cloudinary } from 'cloudinary';
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const getPublicIdFromUrl = (url?: string) => {
+  if (!url) return null;
+  try {
+    const parts = url.split('/');
+    const filename = parts[parts.length - 1];
+    return filename.split('.').slice(0, -1).join('.') || filename.split('.')[0];
+  } catch (e) {
+    return null;
+  }
+};
 
 
 export async function PUT(
@@ -19,6 +37,27 @@ export async function PUT(
     const data = await request.json();
     const resolvedParams = await params;
     const id = resolvedParams.id as string;
+    // Fetch existing to determine if we need to remove previous Cloudinary image
+    const existing = await CoreCompetency.findById(id);
+    if (!existing) {
+      return NextResponse.json(
+        { success: false, error: 'Competency not found' },
+        { status: 404 }
+      );
+    }
+
+    const existingPublicId = getPublicIdFromUrl(existing.skillImage as any);
+    const newPublicId = getPublicIdFromUrl(data?.skillImage as any);
+
+    // If image changed (and previous existed), delete previous from Cloudinary
+    if (existingPublicId && existingPublicId !== newPublicId) {
+      try {
+        await cloudinary.uploader.destroy(existingPublicId);
+      } catch (err) {
+        console.error('Failed to delete old Cloudinary image:', err);
+      }
+    }
+
     const competency = await CoreCompetency.findByIdAndUpdate(
       id,
       data,
@@ -61,6 +100,16 @@ export async function DELETE(
         { success: false, error: 'Competency not found' },
         { status: 404 }
       );
+    }
+
+    // If competency had an image, delete it from Cloudinary
+    const publicId = getPublicIdFromUrl(competency.skillImage as any);
+    if (publicId) {
+      try {
+        await cloudinary.uploader.destroy(publicId);
+      } catch (err) {
+        console.error('Failed to delete Cloudinary image for competency:', err);
+      }
     }
 
     return NextResponse.json(

@@ -79,4 +79,15 @@
     color: var(--color-foreground);
     font-family: var(--font-sans, system-ui, sans-serif);
   }
+  /* Prevent horizontal scrollbar caused by overflowing elements */
+  html, body {
+    overflow-x: hidden;
+  }
+
+  /* Ensure images and media don't exceed their container */
+  img, video, iframe {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
 }

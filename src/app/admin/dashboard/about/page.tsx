@@ -33,9 +33,7 @@ export default function AboutAdminPage() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-  // YEH UPDATED handleDelete FUNCTION HAI
   const handleDelete = async (itemId: string) => {
-    // Delete dialog ko open karo aur ID save karo
     setDeleteId(itemId);
     setIsDeleteDialogOpen(true);
   };
@@ -77,7 +75,6 @@ export default function AboutAdminPage() {
         : `/api/admin/about/${section?.endpoint}`;
       const method = isEdit ? 'PUT' : 'POST';
 
-      // Normalize payload: use `institutionName` as canonical, keep legacy keys for compatibility
       const payload = {
         ...currentItem,
         institutionName: currentItem.institutionName ?? currentItem.institution ?? '',
@@ -101,29 +98,24 @@ export default function AboutAdminPage() {
     }
   };
 
-  // YEH UPDATED confirmDelete FUNCTION HAI
   const confirmDelete = async () => {
     if (!deleteId) return;
-    
+
     const loadingToast = toast.loading("Deleting...");
-    
+
     try {
       const section = sections.find(s => s.id === activeSection);
-      
-      // Pehle item find karo jo delete karna hai
       const itemToDelete = items.find(item => item._id === deleteId);
-      
-      // Agar expertise section hai aur image hai to Cloudinary se delete karo
+
       if (activeSection === 'expertise' && itemToDelete?.imagePublicId) {
         await deleteFromCloudinary(itemToDelete.imagePublicId);
         toast.success("Image deleted from Cloudinary!", { id: loadingToast });
       }
-      
-      // Database se delete karo
+
       const res = await fetch(`/api/admin/about/${section?.endpoint}/${deleteId}`, {
         method: 'DELETE',
       });
-      
+
       if (!res.ok) throw new Error('Failed to delete');
 
       toast.success('Deleted! 🗑️', { id: loadingToast });
@@ -152,24 +144,41 @@ export default function AboutAdminPage() {
       [field]: (currentItem[field] || []).filter((i: string) => i !== item),
     });
   };
-  
+
+  const handleSkillImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const { url } = await uploadToCloudinary(file as any);
+      setCurrentItem({
+        ...currentItem,
+        skillImage: url,
+      });
+    } catch (err) {
+      console.error('Upload failed', err);
+      alert('Image upload failed');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#B7AEA3]">
-      {/* Header */}
-      <header className="bg-[#1A1A1A] shadow-2xl border-b-4 border-[#000000] sticky top-0 z-10">
-        <div className="px-6 py-6">
-          <div className="flex items-center justify-between">
+      {/* Header - Fully Responsive */}
+      <header className="bg-[#1A1A1A] shadow-2xl border-b-2 sm:border-b-4 border-[#000000] sticky top-0 z-10">
+        <div className="px-4 sm:px-6 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
+              className="w-full sm:w-auto"
             >
-              <h1 className="text-4xl font-black text-[#FFFFFF] flex items-center gap-3">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#FFFFFF] flex items-center gap-2 sm:gap-3">
                 About Page
-                <Sparkles className="text-[#B7AEA3]" size={32} />
+                <Sparkles className="text-[#B7AEA3]" size={24} />
               </h1>
-              <p className="text-[#FFFFFF]/70 font-semibold mt-1">
+              <p className="text-[#FFFFFF]/70 font-semibold mt-1 text-sm sm:text-base">
                 Manage your about page content
               </p>
             </motion.div>
@@ -179,9 +188,9 @@ export default function AboutAdminPage() {
               transition={{ duration: 0.6 }}
               onClick={fetchItems}
               disabled={loading}
-              className="flex items-center gap-2 bg-[#FFFFFF] hover:bg-[#D9D2C9] text-[#000000] px-6 py-3 font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#FFFFFF] hover:bg-[#D9D2C9] text-[#000000] px-4 sm:px-6 py-2 sm:py-3 font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 rounded-xl sm:rounded-2xl text-sm sm:text-base"
             >
-              <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
+              <RefreshCw size={18} className={loading ? 'animate-spin' : ''} />
               Refresh
             </motion.button>
           </div>
@@ -189,13 +198,13 @@ export default function AboutAdminPage() {
       </header>
 
       {/* Main Content */}
-      <main className="p-6">
-        {/* Section Tabs */}
+      <main className="p-3 sm:p-4 lg:p-6">
+        {/* Section Tabs - Responsive Grid */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-6 flex flex-wrap gap-3"
+          className="mb-4 sm:mb-6 grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-3"
         >
           {sections.map((section) => {
             const Icon = section.icon;
@@ -203,100 +212,102 @@ export default function AboutAdminPage() {
               <button
                 key={section.id}
                 onClick={() => setActiveSection(section.id as SectionType)}
-                className={`flex items-center gap-2 px-6 py-3 font-bold transition-all duration-300 ${activeSection === section.id
-                  ? 'bg-[#000000] text-[#FFFFFF] border-4 border-[#B7AEA3] shadow-lg scale-105'
-                  : 'bg-[#FFFFFF] text-[#000000] border-4 border-[#000000] hover:border-[#B7AEA3]'
-                  }`}
+                className={`flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 font-bold transition-all duration-300 rounded-xl sm:rounded-2xl text-xs sm:text-sm lg:text-base ${
+                  activeSection === section.id
+                    ? 'bg-[#000000] text-[#FFFFFF] border-2 sm:border-4 border-[#B7AEA3] shadow-lg scale-105'
+                    : 'bg-[#FFFFFF] text-[#000000] border-2 sm:border-4 border-[#000000] hover:border-[#B7AEA3]'
+                }`}
               >
-                <Icon size={18} />
-                <span>{section.label}</span>
+                <Icon size={16} className="hidden sm:block" />
+                <span className="truncate">{section.label}</span>
               </button>
             );
           })}
         </motion.div>
 
-        {/* Content Section */}
+        {/* Content Section - Responsive */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-[#FFFFFF] shadow-2xl p-8 border-4 border-[#000000]"
+          className="bg-[#FFFFFF] shadow-2xl p-4 sm:p-6 lg:p-8 border-2 sm:border-4 border-[#000000] rounded-xl sm:rounded-2xl"
         >
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-[#000000] flex items-center justify-center">
-                <BarChart3 className="text-[#FFFFFF]" size={24} />
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
+            <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#000000] flex items-center justify-center shrink-0">
+                <BarChart3 className="text-[#FFFFFF]" size={20} />
               </div>
-              <div>
-                <h2 className="text-3xl font-black text-[#000000]">
+              <div className="min-w-0 flex-1">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-[#000000] truncate">
                   {sections.find(s => s.id === activeSection)?.label}
                 </h2>
-                <p className="text-[#000000]/60 font-semibold text-sm">
+                <p className="text-[#000000]/60 font-semibold text-xs sm:text-sm">
                   Manage your content
                 </p>
               </div>
             </div>
-            <div className="flex gap-3">
-              <div className="inline-flex items-center gap-2 bg-[#D9D2C9] px-4 py-2">
-                <Zap className="w-4 h-4 text-[#000000]" />
-                <span className="text-[#000000] font-bold text-sm">
+            <div className="flex gap-2 sm:gap-3 w-full sm:w-auto">
+              <div className="inline-flex items-center gap-1 sm:gap-2 bg-[#D9D2C9] px-3 sm:px-4 py-2 rounded-xl sm:rounded-2xl flex-1 sm:flex-initial justify-center">
+                <Zap className="w-3 h-3 sm:w-4 sm:h-4 text-[#000000]" />
+                <span className="text-[#000000] font-bold text-xs sm:text-sm">
                   {items.length} Items
                 </span>
               </div>
               <button
-              type="button"
+                type="button"
                 onClick={() => {
                   setCurrentItem({});
                   setEditDialogOpen(true);
                 }}
-                className="flex items-center gap-2 bg-[#000000] hover:bg-[#1A1A1A] text-[#FFFFFF] px-6 py-3 font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="flex items-center justify-center gap-1 sm:gap-2 bg-[#000000] hover:bg-[#1A1A1A] text-[#FFFFFF] px-4 sm:px-6 py-2 sm:py-3 font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 rounded-xl sm:rounded-2xl text-xs sm:text-sm flex-1 sm:flex-initial"
               >
-                <Plus size={20} />
-                Add New
+                <Plus size={16} />
+                <span className="hidden sm:inline">Add New</span>
+                <span className="sm:hidden">Add</span>
               </button>
             </div>
           </div>
 
-          {/* Items List */}
+          {/* Items List - Responsive */}
           {loading ? (
-            <div className="text-center py-12">
-              <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-[#000000] border-t-transparent"></div>
-              <p className="mt-4 text-[#000000] font-bold">Loading...</p>
+            <div className="text-center py-8 sm:py-12">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-4 border-[#000000] border-t-transparent"></div>
+              <p className="mt-4 text-[#000000] font-bold text-sm sm:text-base">Loading...</p>
             </div>
           ) : items.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-xl font-black text-[#000000]">No items found</p>
-              <p className="text-[#000000]/60">Click "Add New" to create one</p>
+            <div className="text-center py-8 sm:py-12">
+              <p className="text-lg sm:text-xl font-black text-[#000000]">No items found</p>
+              <p className="text-[#000000]/60 text-sm sm:text-base">Click "Add New" to create one</p>
             </div>
           ) : (
-            <div className="grid gap-4">
+            <div className="grid gap-3 sm:gap-4">
               {items.map((item, index) => (
                 <motion.div
                   key={item._id}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4, delay: 0.1 * index }}
-                  className="p-6 bg-[#D9D2C9] hover:bg-[#B7AEA3] transition-colors duration-200 border-2 border-[#000000]/10"
+                  className="p-4 sm:p-6 bg-[#D9D2C9] hover:bg-[#B7AEA3] transition-colors duration-200 border-2 border-[#000000]/10 rounded-xl sm:rounded-2xl"
                 >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <h3 className="text-xl font-black text-[#000000] mb-2">
+                  <div className="flex flex-col sm:flex-row items-start justify-between gap-3 sm:gap-4">
+                    <div className="flex-1 min-w-0 w-full">
+                      <h3 className="text-lg sm:text-xl font-black text-[#000000] mb-2 wraps-break-words">
                         {item.title || item.skillName || item.period}
                       </h3>
-                      <p className="text-[#000000]/70 mb-2">
+                      <p className="text-[#000000]/70 mb-2 text-sm sm:text-base line-clamp-3">
                         {item.description?.substring(0, 150)}...
                       </p>
                       {item.tags && item.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mt-3">
+                        <div className="flex flex-wrap gap-1 sm:gap-2 mt-2 sm:mt-3">
                           {item.tags.map((tag: string, i: number) => (
-                            <span key={i} className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs font-bold">
+                            <span key={i} className="px-2 sm:px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs font-bold break-all">
                               {tag}
                             </span>
                           ))}
                         </div>
                       )}
                     </div>
-                    <div className="flex gap-2 ml-4">
+                    <div className="flex sm:flex-col gap-2 w-full sm:w-auto">
                       <button
                         onClick={() => {
                           const normalized = {
@@ -307,13 +318,13 @@ export default function AboutAdminPage() {
                           setCurrentItem(normalized);
                           setEditDialogOpen(true);
                         }}
-                        className="p-2 bg-[#000000] hover:bg-[#1A1A1A] text-[#FFFFFF] transition-all"
+                        className="flex-1 sm:flex-initial p-2 bg-[#000000] hover:bg-[#1A1A1A] text-[#FFFFFF] transition-all flex items-center justify-center"
                       >
                         <Edit size={16} />
                       </button>
                       <button
                         onClick={() => handleDelete(item._id)}
-                        className="p-2 bg-[#000000] hover:bg-red-600 text-[#FFFFFF] transition-all"
+                        className="flex-1 sm:flex-initial p-2 bg-[#000000] hover:bg-red-600 text-[#FFFFFF] transition-all flex items-center justify-center"
                       >
                         <Trash2 size={16} />
                       </button>
@@ -326,74 +337,66 @@ export default function AboutAdminPage() {
         </motion.div>
       </main>
 
-      {/* Edit Dialog */}
+      {/* Edit Dialog - Fully Responsive */}
       {editDialogOpen && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#FFFFFF] border-4 border-[#000000] max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            className="bg-[#FFFFFF] border-2 sm:border-4 border-[#000000] w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl sm:rounded-2xl my-4"
           >
-            <div className="p-6 border-b-4 border-[#000000] flex items-center justify-between bg-[#1A1A1A]">
-              <h2 className="text-2xl font-black text-[#FFFFFF]">
+            <div className="p-4 sm:p-6 border-b-2 sm:border-b-4 border-[#000000] flex items-center justify-between bg-[#1A1A1A] sticky top-0 z-10">
+              <h2 className="text-xl sm:text-2xl font-black text-[#FFFFFF]">
                 {currentItem._id ? 'Edit Item' : 'Add New Item'}
               </h2>
               <button
                 onClick={() => setEditDialogOpen(false)}
                 className="p-2 hover:bg-[#FFFFFF]/10 transition-colors"
               >
-                <X size={24} className="text-[#FFFFFF]" />
+                <X size={20} className="text-[#FFFFFF]" />
               </button>
             </div>
 
-            <div className="p-6 space-y-4">
-              {/* Form fields based on section type */}
+            <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+              {/* Journey Section */}
               {activeSection === 'journey' && (
                 <>
-                  {/* Title */}
                   <input
                     type="text"
                     placeholder="Title"
                     value={currentItem.title || ''}
                     onChange={(e) => setCurrentItem({ ...currentItem, title: e.target.value })}
-                    className="w-full px-4 py-3 mb-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                   />
-                  {/* Description */}
                   <textarea
                     placeholder="Description"
                     value={currentItem.description || ''}
-                    onChange={(e) =>
-                      setCurrentItem({ ...currentItem, description: e.target.value })
-                    }
+                    onChange={(e) => setCurrentItem({ ...currentItem, description: e.target.value })}
                     rows={4}
-                    className="w-full px-4 py-3 mb-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                   />
-                  {/* Period */}
                   <input
                     type="text"
                     placeholder="Period (e.g., 2020-2023)"
                     value={currentItem.period || ''}
                     onChange={(e) => setCurrentItem({ ...currentItem, period: e.target.value })}
-                    className="w-full sm:w-2/3 px-4 py-3 mb-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                   />
-                  {/* Tags */}
-                  <div className="mb-3">
+                  <div>
                     <label className="block text-sm font-bold mb-2 text-[#000000]">Tags</label>
                     <div className="flex flex-col sm:flex-row gap-2 mb-2">
                       <input
                         type="text"
                         value={arrayInput}
                         onChange={(e) => setArrayInput(e.target.value)}
-                        onKeyPress={(e) =>
-                          e.key === 'Enter' && (e.preventDefault(), addArrayItem('tags'))
-                        }
-                        className="flex-1 px-4 py-2 border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addArrayItem('tags'))}
+                        className="flex-1 px-3 sm:px-4 py-2 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                         placeholder="Add tag and press Enter"
                       />
                       <button
                         type="button"
                         onClick={() => addArrayItem('tags')}
-                        className="px-4 py-2 bg-[#000000] text-[#FFFFFF] font-bold hover:bg-[#1A1A1A] rounded-md flex items-center justify-center"
+                        className="w-full sm:w-auto px-4 py-2 bg-[#000000] text-[#FFFFFF] font-bold hover:bg-[#1A1A1A] rounded-md flex items-center justify-center"
                       >
                         <Plus size={18} />
                       </button>
@@ -402,12 +405,12 @@ export default function AboutAdminPage() {
                       {(currentItem.tags || []).map((tag: string, i: number) => (
                         <span
                           key={i}
-                          className="px-3 py-1 bg-[#D9D2C9] text-[#000000] text-sm flex items-center gap-2 rounded-md"
+                          className="px-2 sm:px-3 py-1 bg-[#D9D2C9] text-[#000000] text-xs sm:text-sm flex items-center gap-2 rounded-md break-all"
                         >
                           {tag}
                           <X
                             size={14}
-                            className="cursor-pointer hover:text-red-600"
+                            className="cursor-pointer hover:text-red-600 shrink-0"
                             onClick={() => removeArrayItem('tags', tag)}
                           />
                         </span>
@@ -417,93 +420,63 @@ export default function AboutAdminPage() {
                 </>
               )}
 
-
+              {/* Expertise Section */}
               {activeSection === 'expertise' && (
                 <>
-                  {/* Title */}
                   <input
                     type="text"
                     placeholder="Title"
                     value={currentItem.title || ''}
                     onChange={(e) => setCurrentItem({ ...currentItem, title: e.target.value })}
-                    className="w-full px-4 py-3 mb-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                   />
-
-                  {/* Description */}
                   <textarea
                     placeholder="Description"
                     value={currentItem.description || ''}
-                    onChange={(e) =>
-                      setCurrentItem({ ...currentItem, description: e.target.value })
-                    }
+                    onChange={(e) => setCurrentItem({ ...currentItem, description: e.target.value })}
                     rows={4}
-                    className="w-full px-4 py-3 mb-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                   />
-
-                  {/* Image Upload */}
-                  <div className="mb-3">
+                  <div>
                     <label className="block text-sm font-bold mb-2 text-[#000000]">Image</label>
                     <input
                       type="file"
                       accept="image/*"
                       onChange={async (e) => {
                         if (!e.target.files || !e.target.files[0]) return;
-
                         const file = e.target.files[0];
                         const loadingToast = toast.loading("Uploading image...");
-
                         try {
-                          // Agar purani image hai to delete karo (edit case)
                           if (currentItem.image && currentItem.imagePublicId) {
                             await deleteFromCloudinary(currentItem.imagePublicId);
                           }
-
-                          // Nayi image upload karo
                           const { url, publicId } = await uploadToCloudinary(file);
-
-                          setCurrentItem({
-                            ...currentItem,
-                            image: url,
-                            imagePublicId: publicId
-                          });
-
+                          setCurrentItem({ ...currentItem, image: url, imagePublicId: publicId });
                           toast.success("Image uploaded successfully!", { id: loadingToast });
                         } catch (err) {
                           console.error(err);
                           toast.error("Image upload failed!", { id: loadingToast });
                         }
                       }}
-                      className="w-full px-4 py-2 border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
+                      className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                     />
-
-                          {(currentItem.image || currentItem.imageUrl || currentItem.image_url || currentItem.img) && (
+                    {(currentItem.image || currentItem.imageUrl || currentItem.image_url || currentItem.img) && (
                       <div className="mt-2 relative inline-block">
                         <img
-                          src={
-                            currentItem.image ||
-                            currentItem.imageUrl ||
-                            currentItem.image_url ||
-                            currentItem.img ||
-                            ''
-                          }
+                          src={currentItem.image || currentItem.imageUrl || currentItem.image_url || currentItem.img || ''}
                           alt="Uploaded"
-                          className="w-32 h-32 object-cover rounded-md border"
+                          className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-md border"
                         />
                         <button
                           type="button"
                           onClick={async () => {
                             const confirmDelete = confirm("Are you sure you want to remove this image?");
                             if (!confirmDelete) return;
-
                             try {
                               if (currentItem.imagePublicId) {
                                 await deleteFromCloudinary(currentItem.imagePublicId);
                               }
-                              setCurrentItem({
-                                ...currentItem,
-                                image: '',
-                                imagePublicId: ''
-                              });
+                              setCurrentItem({ ...currentItem, image: '', imagePublicId: '' });
                               toast.success("Image removed!");
                             } catch (err) {
                               toast.error("Failed to remove image!");
@@ -518,6 +491,8 @@ export default function AboutAdminPage() {
                   </div>
                 </>
               )}
+
+              {/* Academic Section */}
               {activeSection === 'academic' && (
                 <>
                   <input
@@ -525,34 +500,33 @@ export default function AboutAdminPage() {
                     placeholder="Degree/Qualification Title"
                     value={currentItem.title || ''}
                     onChange={(e) => setCurrentItem({ ...currentItem, title: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                   />
                   <input
                     type="text"
                     placeholder="Institution Name"
-                    value={currentItem.institutionName
-                    }
+                    value={currentItem.institutionName}
                     onChange={(e) => setCurrentItem({ ...currentItem, institutionName: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                   />
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div>
-                      <label className="block text-sm font-bold mb-2 text-[#000000]">Start Date</label>
+                      <label className="block text-xs sm:text-sm font-bold mb-2 text-[#000000]">Start Date</label>
                       <input
                         type="date"
                         value={currentItem.startDate ? new Date(currentItem.startDate).toISOString().split('T')[0] : ''}
                         onChange={(e) => setCurrentItem({ ...currentItem, startDate: e.target.value })}
-                        className="w-full px-4 py-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-bold mb-2 text-[#000000]">End Date</label>
+                      <label className="block text-xs sm:text-sm font-bold mb-2 text-[#000000]">End Date</label>
                       <input
                         type="date"
                         value={currentItem.endDate ? new Date(currentItem.endDate).toISOString().split('T')[0] : ''}
                         onChange={(e) => setCurrentItem({ ...currentItem, endDate: e.target.value })}
                         disabled={currentItem.isCurrent}
-                        className="w-full px-4 py-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none disabled:bg-gray-100"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none disabled:bg-gray-100 rounded-md"
                       />
                     </div>
                   </div>
@@ -561,61 +535,62 @@ export default function AboutAdminPage() {
                       type="checkbox"
                       checked={currentItem.isCurrent || false}
                       onChange={(e) => setCurrentItem({ ...currentItem, isCurrent: e.target.checked, endDate: e.target.checked ? null : currentItem.endDate })}
-                      className="w-5 h-5"
+                      className="w-4 h-4 sm:w-5 sm:h-5"
                     />
-                    <span className="text-[#000000] font-bold">Currently Pursuing</span>
+                    <span className="text-[#000000] font-bold text-sm sm:text-base">Currently Pursuing</span>
                   </label>
                   <input
                     type="text"
                     placeholder="Location"
                     value={currentItem.location || ''}
                     onChange={(e) => setCurrentItem({ ...currentItem, location: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                   />
                   <textarea
                     placeholder="Description (Optional)"
                     value={currentItem.description || ''}
                     onChange={(e) => setCurrentItem({ ...currentItem, description: e.target.value })}
                     rows={4}
-                    className="w-full px-4 py-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                   />
                 </>
               )}
 
+              {/* Professional Section */}
               {activeSection === 'professional' && (
                 <>
                   <input
                     type="text"
-                    placeholder="Job Title/Position"
-                    value={currentItem.title || ''}
-                    onChange={(e) => setCurrentItem({ ...currentItem, title: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none"
+                    placeholder="Company Name"
+                    value={currentItem.companyName || ''}
+                    onChange={(e) => setCurrentItem({ ...currentItem, companyName: e.target.value })}
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                   />
                   <input
                     type="text"
-                    placeholder="Institution / Organization Name"
-                    value={currentItem.institutionName ?? ''}
-                    onChange={(e) => setCurrentItem({ ...currentItem, institutionName: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none"
+                    placeholder="Position"
+                    value={currentItem.position ?? ''}
+                    onChange={(e) => setCurrentItem({ ...currentItem, position: e.target.value })}
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                   />
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div>
-                      <label className="block text-sm font-bold mb-2 text-[#000000]">Start Date</label>
+                      <label className="block text-xs sm:text-sm font-bold mb-2 text-[#000000]">Start Date</label>
                       <input
                         type="date"
                         value={currentItem.startDate ? new Date(currentItem.startDate).toISOString().split('T')[0] : ''}
                         onChange={(e) => setCurrentItem({ ...currentItem, startDate: e.target.value })}
-                        className="w-full px-4 py-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-bold mb-2 text-[#000000]">End Date</label>
+                      <label className="block text-xs sm:text-sm font-bold mb-2 text-[#000000]">End Date</label>
                       <input
                         type="date"
                         value={currentItem.endDate ? new Date(currentItem.endDate).toISOString().split('T')[0] : ''}
                         onChange={(e) => setCurrentItem({ ...currentItem, endDate: e.target.value })}
                         disabled={currentItem.isCurrent}
-                        className="w-full px-4 py-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none disabled:bg-gray-100"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none disabled:bg-gray-100 rounded-md"
                       />
                     </div>
                   </div>
@@ -624,43 +599,28 @@ export default function AboutAdminPage() {
                       type="checkbox"
                       checked={currentItem.isCurrent || false}
                       onChange={(e) => setCurrentItem({ ...currentItem, isCurrent: e.target.checked, endDate: e.target.checked ? null : currentItem.endDate })}
-                      className="w-5 h-5"
+                      className="w-4 h-4 sm:w-5 sm:h-5"
                     />
-                    <span className="text-[#000000] font-bold">Currently Working Here</span>
+                    <span className="text-[#000000] font-bold text-sm sm:text-base">Currently Working Here</span>
                   </label>
                   <input
                     type="text"
                     placeholder="Location"
                     value={currentItem.location || ''}
                     onChange={(e) => setCurrentItem({ ...currentItem, location: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                   />
                   <textarea
                     placeholder="Description (Optional)"
                     value={currentItem.description || ''}
                     onChange={(e) => setCurrentItem({ ...currentItem, description: e.target.value })}
                     rows={4}
-                    className="w-full px-4 py-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                   />
-                  <input
-                    type="number"
-                    placeholder="Order"
-                    value={currentItem.order || 0}
-                    onChange={(e) => setCurrentItem({ ...currentItem, order: parseInt(e.target.value) })}
-                    className="w-full px-4 py-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none"
-                  />
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={currentItem.isActive || false}
-                      onChange={(e) => setCurrentItem({ ...currentItem, isActive: e.target.checked })}
-                      className="w-5 h-5"
-                    />
-                    <span className="text-[#000000] font-bold">Active</span>
-                  </label>
                 </>
               )}
 
+              {/* Competency Section */}
               {activeSection === 'competency' && (
                 <>
                   <input
@@ -668,79 +628,47 @@ export default function AboutAdminPage() {
                     placeholder="Skill Name"
                     value={currentItem.skillName || ''}
                     onChange={(e) => setCurrentItem({ ...currentItem, skillName: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                   />
-                  <input
-                    type="url"
-                    placeholder="Skill Image URL (Optional)"
-                    value={currentItem.skillImage || ''}
-                    onChange={(e) => setCurrentItem({ ...currentItem, skillImage: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none"
-                  />
-                  {currentItem.skillImage && (
-                    <div className="w-16 h-16 overflow-hidden rounded-full border-2 border-[#000000]">
-                      <img
-                        src={currentItem.skillImage}
-                        alt="Skill preview"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
                   <textarea
                     placeholder="Description (Optional)"
                     value={currentItem.description || ''}
                     onChange={(e) => setCurrentItem({ ...currentItem, description: e.target.value })}
                     rows={3}
-                    className="w-full px-4 py-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                   />
-                  <div>
-                    <label className="block text-sm font-bold mb-2 text-[#000000]">
-                      Proficiency Level: {currentItem.proficiencyLevel || 0}%
-                    </label>
+                  <div className="space-y-2">
+                    <label className="block text-xs sm:text-sm font-bold text-[#000000]">Skill Image</label>
                     <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={currentItem.proficiencyLevel || 0}
-                      onChange={(e) => setCurrentItem({ ...currentItem, proficiencyLevel: parseInt(e.target.value) })}
-                      className="w-full h-2 bg-[#D9D2C9] rounded-lg appearance-none cursor-pointer"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleSkillImageUpload}
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-[#000000]/20 bg-white outline-none cursor-pointer rounded-md"
                     />
-                    <div className="flex justify-between text-xs text-[#000000]/60 mt-1">
-                      <span>Beginner</span>
-                      <span>Intermediate</span>
-                      <span>Expert</span>
-                    </div>
+                    {currentItem.skillImage && (
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 overflow-hidden border-2 border-[#000000]">
+                        <img
+                          src={currentItem.skillImage}
+                          alt="Skill preview"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
                   </div>
-                  <input
-                    type="number"
-                    placeholder="Order"
-                    value={currentItem.order || 0}
-                    onChange={(e) => setCurrentItem({ ...currentItem, order: parseInt(e.target.value) })}
-                    className="w-full px-4 py-3 border-2 border-[#000000]/20 focus:border-[#000000] outline-none"
-                  />
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={currentItem.isActive || false}
-                      onChange={(e) => setCurrentItem({ ...currentItem, isActive: e.target.checked })}
-                      className="w-5 h-5"
-                    />
-                    <span className="text-[#000000] font-bold">Active</span>
-                  </label>
                 </>
               )}
 
-              {/* Action Buttons */}
-              <div className="flex gap-3 pt-6 border-t-4 border-[#000000]">
+              {/* Action Buttons - Responsive */}
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-4 sm:pt-6 border-t-2 sm:border-t-4 border-[#000000]">
                 <button
                   onClick={() => setEditDialogOpen(false)}
-                  className="flex-1 px-6 py-3 bg-[#D9D2C9] hover:bg-[#B7AEA3] text-[#000000] font-bold transition-all"
+                  className="w-full sm:flex-1 px-4 sm:px-6 py-2 sm:py-3 bg-[#D9D2C9] hover:bg-[#B7AEA3] text-[#000000] font-bold transition-all rounded-xl sm:rounded-2xl text-sm sm:text-base"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSave}
-                  className="flex-1 px-6 py-3 bg-[#000000] hover:bg-[#1A1A1A] text-[#FFFFFF] font-bold transition-all flex items-center justify-center gap-2"
+                  className="w-full sm:flex-1 px-4 sm:px-6 py-2 sm:py-3 bg-[#000000] hover:bg-[#1A1A1A] text-[#FFFFFF] font-bold transition-all flex items-center justify-center gap-2 rounded-xl sm:rounded-2xl text-sm sm:text-base"
                 >
                   <Save size={18} />
                   Save
@@ -750,22 +678,24 @@ export default function AboutAdminPage() {
           </motion.div>
         </div>
       )}
+
+      {/* Delete Alert Dialog - Responsive */}
       <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <AlertDialogContent className="bg-[#FFFFFF] border-4 border-[#000000]">
+        <AlertDialogContent className="bg-[#FFFFFF] border-2 sm:border-4 border-[#000000] w-[90vw] max-w-md rounded-xl sm:rounded-2xl">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-[#000000] font-black">
+            <AlertDialogTitle className="text-[#000000] font-black text-lg sm:text-xl">
               Confirm Deletion
             </AlertDialogTitle>
-            <AlertDialogDescription className="text-[#000000]/70">
+            <AlertDialogDescription className="text-[#000000]/70 text-sm sm:text-base">
               Are you sure you want to delete this item? This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel className="bg-[#D9D2C9] text-[#000000] hover:bg-[#B7AEA3] px-4 py-2 rounded-md">
+          <AlertDialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0">
+            <AlertDialogCancel className="w-full sm:w-auto bg-[#D9D2C9] text-[#000000] hover:bg-[#B7AEA3] px-4 py-2 rounded-md text-sm sm:text-base m-0 mr-2">
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
-              className="bg-[#000000] text-[#FFFFFF] hover:bg-[#1A1A1A] px-4 py-2 rounded-md"
+              className="w-full sm:w-auto bg-[#000000] text-[#FFFFFF] hover:bg-[#1A1A1A] px-4 py-2 rounded-md text-sm sm:text-base m-0"
               onClick={confirmDelete}
             >
               Delete
@@ -773,7 +703,6 @@ export default function AboutAdminPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
     </div>
   );
 }

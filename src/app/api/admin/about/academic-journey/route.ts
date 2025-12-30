@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
     const data = await request.json();
-    // normalize legacy fields to `institutionName`
+  
     if (!data.institutionName) {
       data.institutionName = data.companyOrInstitution ?? data.company ?? data.institution ?? undefined;
     }

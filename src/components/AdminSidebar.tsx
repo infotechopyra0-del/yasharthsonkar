@@ -7,6 +7,7 @@ import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Image } from '@/components/ui/image';
 import {
   LayoutDashboard,
   Code,
@@ -19,7 +20,6 @@ import {
   Menu,
   X,
   Package,
-  Shield
 } from 'lucide-react';
 
 export default function AdminSidebar() {
@@ -110,10 +110,15 @@ export default function AdminSidebar() {
       >
         <div className="flex flex-col h-full overflow-hidden">
           {/* Header - Fixed Height */}
-          <div className="flex-shrink-0 p-4 sm:p-6 border-b-4 border-[#000000]">
+          <div className="shrink-0 p-4 sm:p-6 border-b-4 border-[#000000]">
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#B7AEA3] flex items-center justify-center shadow-lg rounded">
-                <Shield className="w-5 h-5 sm:w-7 sm:h-7 text-[#000000]" />
+              <div className="relative w-10 h-10 sm:w-12 sm:h-12 bg-[#B7AEA3] shadow-lg rounded overflow-hidden">
+                <Image
+                  src="/images/MainLogo.jpg"
+                  alt="Main Logo"
+                  fill
+                  className="object-cover"
+                />
               </div>
               <div>
                 <h1 className="text-xl sm:text-2xl font-black text-[#FFFFFF] tracking-tight">
@@ -143,14 +148,14 @@ export default function AdminSidebar() {
                     }
                   `}
                 >
-                  <div className={`flex-shrink-0 ${active ? 'text-[#000000]' : 'text-[#B7AEA3]'}`}>
+                  <div className={`shrink-0 ${active ? 'text-[#000000]' : 'text-[#B7AEA3]'}`}>
                     <Icon size={20} strokeWidth={2.5} />
                   </div>
                   <span className="font-bold text-sm sm:text-base truncate">
                     {item.label}
                   </span>
                   {active && (
-                    <div className="ml-auto flex-shrink-0">
+                    <div className="ml-auto shrink-0">
                       <Sparkles size={14} className="text-[#000000]" />
                     </div>
                   )}
@@ -160,11 +165,11 @@ export default function AdminSidebar() {
           </nav>
 
           {/* User Info & Logout - Fixed Bottom */}
-          <div className="flex-shrink-0 p-3 sm:p-4 border-t-4 border-[#000000] space-y-2 sm:space-y-3">
+          <div className="shrink-0 p-3 sm:p-4 border-t-4 border-[#000000] space-y-2 sm:space-y-3">
             {/* User Info Badge */}
             <div className="bg-[#FFFFFF]/5 backdrop-blur-sm px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-[#B7AEA3]/30">
               <div className="flex items-center gap-2 mb-1">
-                <div className="w-2 h-2 rounded-full bg-[#B7AEA3] animate-pulse flex-shrink-0"></div>
+                <div className="w-2 h-2 rounded-full bg-[#B7AEA3] animate-pulse shrink-0"></div>
                 <span className="text-[#B7AEA3] font-bold text-xs uppercase tracking-wider truncate">
                   System Status
                 </span>
@@ -179,7 +184,7 @@ export default function AdminSidebar() {
               onClick={handleLogout}
               className="w-full flex items-center justify-center gap-2 sm:gap-3 bg-[#FFFFFF] hover:bg-[#D9D2C9] text-[#000000] px-3 sm:px-4 py-2.5 sm:py-3.5 rounded-lg transition-all duration-300 font-black shadow-lg hover:shadow-xl hover:scale-105"
             >
-              <LogOut size={18} strokeWidth={2.5} className="flex-shrink-0" />
+              <LogOut size={18} strokeWidth={2.5} className="shrink-0" />
               <span className="text-sm sm:text-base">Logout</span>
             </button>
           </div>
