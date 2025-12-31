@@ -22,7 +22,6 @@ export async function GET(req: NextRequest) {
       count: blogs.length
     });
   } catch (error: any) {
-    console.error('GET /api/admin/blogs error:', error);
     return NextResponse.json(
       { success: false, error: error.message || 'Failed to fetch blogs' },
       { status: 500 }
@@ -61,8 +60,6 @@ export async function POST(req: NextRequest) {
       message: 'Blog created successfully'
     }, { status: 201 });
   } catch (error: any) {
-    console.error('POST /api/admin/blogs error:', error);
-    // Handle duplicate-key (unique index) errors from MongoDB
     if (error && (error.code === 11000 || error.name === 'MongoServerError')) {
       return NextResponse.json(
         { success: false, error: 'Duplicate key error: a blog with this slug already exists' },

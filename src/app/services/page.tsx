@@ -37,10 +37,8 @@ export default function ServicesPage() {
         setServices(data.services || []);
       } else {
         setServices([]);
-        console.error('API returned error:', data.error);
       }
     } catch (err: any) {
-      console.error('Error fetching services:', err);
       setServices([]);
     } finally {
       setLoading(false);

@@ -40,22 +40,14 @@ export async function PUT(request: NextRequest, context: any) {
 
 export async function DELETE(_request: NextRequest, context: any) {
   const params = await context.params;
-  console.log('[API] DELETE /api/admin/contact/faq/:id called - id=', params?.id);
   try {
     await connectDB();
-    console.log('[API] connected to DB for faq delete, id=', params?.id);
-
     const deletedFAQ = await FAQ.findByIdAndDelete(params?.id);
-
     if (!deletedFAQ) {
-      console.log('[API] faq not found for delete, id=', params?.id);
       return NextResponse.json({ success: false, error: 'FAQ not found' }, { status: 404 });
     }
-
-    console.log('[API] faq deleted', params?.id);
     return NextResponse.json({ success: true, message: 'FAQ deleted successfully' });
   } catch (error) {
-    console.error('[API] error deleting faq', params.id, error);
     return NextResponse.json({ success: false, error: 'Failed to delete FAQ' }, { status: 500 });
   }
 }

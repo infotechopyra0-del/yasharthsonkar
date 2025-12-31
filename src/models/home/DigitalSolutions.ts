@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface IService extends Document {
+export interface IDigitalSolutions extends Document {
   icon: string;
   title: string;
   description: string;
@@ -11,7 +11,7 @@ export interface IService extends Document {
   updatedAt: Date;
 }
 
-const ServiceSchema = new Schema<IService>(
+const DigitalSolutionsSchema = new Schema<IDigitalSolutions>(
   {
     icon: { type: String, required: true },
     title: { type: String, required: true },
@@ -25,4 +25,4 @@ const ServiceSchema = new Schema<IService>(
   }
 );
 
-export default mongoose.models.Service || mongoose.model<IService>('Service', ServiceSchema);
+export default mongoose.models.DigitalSolutions || mongoose.model<IDigitalSolutions>('DigitalSolutions', DigitalSolutionsSchema);

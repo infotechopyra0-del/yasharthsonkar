@@ -22,7 +22,6 @@ export async function GET(
       data: blog
     });
   } catch (error: any) {
-    console.error('GET /api/admin/blogs/slug/[slug] error:', error);
     return NextResponse.json(
       { success: false, error: error.message || 'Failed to fetch blog' },
       { status: 500 }

@@ -42,22 +42,14 @@ export async function PUT(request: NextRequest, context: any) {
 
 export async function DELETE(_request: NextRequest, context: any) {
   const params = await context.params;
-  console.log('[API] DELETE /api/admin/contact/contact-info/:id called - id=', params?.id);
   try {
     await connectDB();
-    console.log('[API] connected to DB for contact-info delete, id=', params?.id);
-
     const deletedContactInfo = await ContactInfo.findByIdAndDelete(params?.id);
-
     if (!deletedContactInfo) {
-      console.log('[API] contact-info not found for delete, id=', params?.id);
       return NextResponse.json({ success: false, error: 'Contact info not found' }, { status: 404 });
     }
-
-    console.log('[API] contact-info deleted', params?.id);
     return NextResponse.json({ success: true, message: 'Contact info deleted successfully' });
   } catch (error) {
-    console.error('[API] error deleting contact-info', params.id, error);
     return NextResponse.json({ success: false, error: 'Failed to delete contact info' }, { status: 500 });
   }
 }

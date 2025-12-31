@@ -43,7 +43,6 @@ export default function GalleryPage() {
       const data = await res.json();
       setGalleryItems(data);
     } catch (error) {
-      console.error('Error fetching gallery:', error);
     } finally {
       setLoading(false);
     }

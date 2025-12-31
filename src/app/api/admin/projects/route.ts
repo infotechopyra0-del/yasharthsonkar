@@ -31,7 +31,6 @@ export async function GET(req: NextRequest) {
       count: projects.length
     });
   } catch (error: any) {
-    console.error('GET /api/admin/projects error:', error);
     return NextResponse.json(
       { success: false, error: error.message || 'Failed to fetch projects' },
       { status: 500 }
@@ -75,7 +74,6 @@ export async function POST(req: NextRequest) {
       message: 'Project created successfully'
     }, { status: 201 });
   } catch (error: any) {
-    console.error('POST /api/admin/projects error:', error);
     return NextResponse.json(
       { success: false, error: error.message || 'Failed to create project' },
       { status: 400 }

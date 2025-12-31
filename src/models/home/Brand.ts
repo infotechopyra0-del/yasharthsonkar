@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IBrand extends Document {
   name: string;
-  tagline: string;
+  category: string;
   description: string;
   logoUrl?: string;
   logoPublicId?: string;
@@ -14,7 +14,7 @@ export interface IBrand extends Document {
 const BrandSchema = new Schema<IBrand>(
   {
     name: { type: String, required: true },
-    tagline: { type: String, required: true },
+    category: { type: String, required: true },
     description: { type: String, required: true },
     logoUrl: { type: String },
     logoPublicId: { type: String },

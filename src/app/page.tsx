@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Code, Sparkles, Award, Users, Globe, Lightbulb, Target, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
@@ -10,6 +11,48 @@ import Navigation from '@/components/navigation';
 import Footer from '@/components/footer';
 
 export default function HomePage() {
+  const [services, setServices] = useState<any[]>([]);
+  const [brands, setBrands] = useState<any[]>([]);
+
+  const IconMap: Record<string, any> = {
+    Code,
+    Sparkles,
+    Award,
+    Users,
+    Globe,
+    Lightbulb,
+  };
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const res = await fetch('/api/admin/home/digitalsolutions');
+        if (!res.ok) return;
+        const data = await res.json();
+        const items = Array.isArray(data) ? data : data?.data || [];
+        setServices(items);
+      } catch (err) {
+        // ignore
+      }
+    };
+    fetchServices();
+  }, []);
+
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const res = await fetch('/api/admin/home/brands');
+        if (!res.ok) return;
+        const data = await res.json();
+        const items = Array.isArray(data) ? data : data?.data || [];
+        setBrands(items);
+      } catch (err) {
+        // ignore
+      }
+    };
+    fetchBrands();
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#B7AEA3]">
       <Navigation />
@@ -105,9 +148,9 @@ export default function HomePage() {
             className="grid grid-cols-2 gap-8 lg:gap-12"
           >
             <div className="space-y-8">
-              <div className="aspect-[4/5] overflow-hidden shadow-2xl">
+              <div className="aspect-4/5 overflow-hidden shadow-2xl">
                 <Image
-                  src="https://static.wixstatic.com/media/d1fa15_c3b7d51a3f644684bc3b6bef0ab384ec~mv2.png?originWidth=384&originHeight=448"
+                  src="/images/ModernWorkspace.png"
                   alt="Modern workspace setup with laptop and development tools"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   width={400}
@@ -137,9 +180,9 @@ export default function HomePage() {
                   Intelligent Automation
                 </p>
               </motion.div>
-              <div className="aspect-[4/5] overflow-hidden shadow-2xl">
+              <div className="aspect-4/5 overflow-hidden shadow-2xl">
                 <Image
-                  src="https://static.wixstatic.com/media/d1fa15_daefc5fa67a54fed80da9f8491282fb4~mv2.png?originWidth=384&originHeight=448"
+                  src="/images/AIDevelopment.png"
                   alt="AI development and machine learning workspace"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   width={400}
@@ -153,7 +196,7 @@ export default function HomePage() {
 
       {/* New About Preview Section */}
       <section className="w-full bg-[#1A1A1A] py-24">
-        <div className="max-w-[100rem] mx-auto px-6">
+        <div className="max-w-400 mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -208,7 +251,7 @@ export default function HomePage() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true }}
-              className="aspect-[4/5] overflow-hidden shadow-2xl"
+              className="aspect-4/5 overflow-hidden shadow-2xl"
             >
               <Image
                 src="/images/yasharthsonker.jpg"
@@ -224,7 +267,7 @@ export default function HomePage() {
 
       {/* Enhanced Services Preview Section */}
       <section className="w-full py-24">
-        <div className="max-w-[100rem] mx-auto px-6">
+        <div className="max-w-400 mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -242,69 +285,35 @@ export default function HomePage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {[
-              { 
-                icon: Code, 
-                title: "Full-Stack Development", 
-                desc: "Modern web applications built with cutting-edge technologies like React, Node.js, and cloud platforms.",
-                features: ["Responsive Design", "API Development", "Database Architecture"]
-              },
-              { 
-                icon: Sparkles, 
-                title: "AI & Machine Learning", 
-                desc: "Intelligent solutions that automate processes and provide data-driven insights for better decision making.",
-                features: ["Automation Systems", "Predictive Analytics", "Natural Language Processing"]
-              },
-              { 
-                icon: Globe, 
-                title: "Digital Strategy", 
-                desc: "Comprehensive digital transformation strategies that align technology with business objectives.",
-                features: ["Technology Consulting", "Digital Roadmaps", "Performance Optimization"]
-              },
-              { 
-                icon: Lightbulb, 
-                title: "Innovation Consulting", 
-                desc: "Strategic guidance on emerging technologies and digital trends to keep your business ahead.",
-                features: ["Technology Assessment", "Innovation Workshops", "Future-Proofing"]
-              },
-              { 
-                icon: Users, 
-                title: "User Experience Design", 
-                desc: "User-centered design approaches that create intuitive and engaging digital experiences.",
-                features: ["UI/UX Design", "User Research", "Prototyping"]
-              },
-              { 
-                icon: Award, 
-                title: "Quality Assurance", 
-                desc: "Rigorous testing and quality control processes ensuring reliable and secure applications.",
-                features: ["Automated Testing", "Security Audits", "Performance Testing"]
-              }
-            ].map((service, index) => (
-              <motion.div
-                key={service.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="group p-8 bg-[#D9D2C9] hover:bg-[#1A1A1A] hover:text-[#FFFFFF] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
-              >
-                <service.icon className="w-12 h-12 mb-6 text-[#000000] group-hover:text-[#FFFFFF] transition-colors" />
-                <h3 className="font-heading text-xl text-[#000000] group-hover:text-[#FFFFFF] mb-4">
-                  {service.title}
-                </h3>
-                <p className="font-paragraph text-[#000000]/80 group-hover:text-[#FFFFFF]/80 mb-6 leading-relaxed">
-                  {service.desc}
-                </p>
-                <ul className="space-y-2">
-                  {service.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="font-paragraph text-sm text-[#000000]/70 group-hover:text-[#FFFFFF]/70 flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 bg-[#000000] group-hover:bg-[#1A1A1A]-foreground rounded-full"></div>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
+            {(services.length ? services : []).map((service, index) => {
+              const IconComp = IconMap[service.icon] || Code;
+              return (
+                <motion.div
+                  key={service.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="group p-8 bg-[#D9D2C9] hover:bg-[#1A1A1A] hover:text-[#FFFFFF] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                >
+                  <IconComp className="w-12 h-12 mb-6 text-[#000000] group-hover:text-[#FFFFFF] transition-colors" />
+                  <h3 className="font-heading text-xl text-[#000000] group-hover:text-[#FFFFFF] mb-4">
+                    {service.title}
+                  </h3>
+                  <p className="font-paragraph text-[#000000]/80 group-hover:text-[#FFFFFF]/80 mb-6 leading-relaxed">
+                    {service.description || service.desc}
+                  </p>
+                  <ul className="space-y-2">
+                    {(service.features || []).map((feature: string, featureIndex: number) => (
+                      <li key={featureIndex} className="font-paragraph text-sm text-[#000000]/70 group-hover:text-[#FFFFFF]/70 flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 bg-[#000000] group-hover:bg-[#1A1A1A]-foreground rounded-full"></div>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              );
+            })}
           </div>
 
           <motion.div
@@ -327,7 +336,7 @@ export default function HomePage() {
 
       {/* New Testimonials/Social Proof Section */}
       <section className="w-full bg-[#1A1A1A] py-24">
-        <div className="max-w-[100rem] mx-auto px-6">
+        <div className="max-w-400 mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -380,7 +389,7 @@ export default function HomePage() {
 
       {/* Our Brands Section */}
       <section className="w-full bg-[#1A1A1A] py-24">
-        <div className="max-w-[100rem] mx-auto px-6">
+        <div className="max-w-400 mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -398,173 +407,45 @@ export default function HomePage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Opyra AI */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="group bg-[#B7AEA3] p-8 rounded-xl hover:bg-[#D9D2C9] transition-all duration-300 transform hover:scale-105"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 bg-[#000000] rounded-full flex items-center justify-center">
-                  <span className="text-[#FFFFFF] text-2xl font-bold">AI</span>
-                </div>
-                <div>
-                  <h3 className="font-heading text-2xl text-[#000000] font-bold">Opyra AI</h3>
-                  <p className="font-paragraph text-sm text-[#000000]/70">Digital Agency</p>
-                </div>
+            {brands && brands.length > 0 ? (
+              brands.map((brand: any, idx: number) => (
+                <motion.div
+                  key={brand._id || idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.1 * (idx + 1) }}
+                  viewport={{ once: true }}
+                  className="group bg-[#B7AEA3] p-8 rounded-xl hover:bg-[#D9D2C9] transition-all duration-300 transform hover:scale-105"
+                >
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 bg-[#000000] rounded-full flex items-center justify-center overflow-hidden">
+                      {brand.logoUrl ? (
+                        <Image src={brand.logoUrl} alt={brand.name || 'Brand'} width={64} height={64} className="w-full h-full object-cover rounded-full" />
+                      ) : (
+                        <span className="text-[#FFFFFF] text-2xl font-bold">{(brand.name || '').split(' ').map((s: string) => s[0]).slice(0,2).join('')}</span>
+                      )}
+                    </div>
+                    <div>
+                      <h3 className="font-heading text-2xl text-[#000000] font-bold">{brand.name}</h3>
+                      <p className="font-paragraph text-sm text-[#000000]/70">{brand.category}</p>
+                    </div>
+                  </div>
+                  <p className="font-paragraph text-[#000000]/80 mb-4 leading-relaxed">
+                    {brand.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {(brand.tags || []).slice(0,6).map((t: string, i: number) => (
+                      <span key={i} className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">{t}</span>
+                    ))}
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12 text-[#FFFFFF]/80">
+                <p className="text-xl font-bold">No Brands</p>
+                <p className="mt-2 text-sm">There are no brands to display right now.</p>
               </div>
-              <p className="font-paragraph text-[#000000]/80 mb-4 leading-relaxed">
-                Cutting-edge digital agency specializing in AI-powered solutions, web development, 
-                and digital marketing strategies for modern businesses.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">AI Solutions</span>
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">Web Development</span>
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">Digital Marketing</span>
-              </div>
-            </motion.div>
-
-            {/* Hotel Shri Vishwanath */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="group bg-[#B7AEA3] p-8 rounded-xl hover:bg-[#D9D2C9] transition-all duration-300 transform hover:scale-105"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 bg-[#000000] rounded-full flex items-center justify-center overflow-hidden">
-                    <Image src="/images/HotelShriVishnath.jpg" alt="HotelShriVishnath" width={64} height={64} className="w-full h-full object-cover rounded-full" />
-                </div>
-                <div>
-                  <h3 className="font-heading text-2xl text-[#000000] font-bold">Hotel Shri Vishwanath</h3>
-                  <p className="font-paragraph text-sm text-[#000000]/70">Hospitality</p>
-                </div>
-              </div>
-              <p className="font-paragraph text-[#000000]/80 mb-4 leading-relaxed">
-                Experience exceptional service and world-class amenities at our luxury hotel in Varanasi. 
-                Leading hospitality operations with focus on guest experience management.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">Luxury Hospitality</span>
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">Guest Experience</span>
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">Tourism</span>
-              </div>
-            </motion.div>
-
-            {/* Occult369 */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="group bg-[#B7AEA3] p-8 rounded-xl hover:bg-[#D9D2C9] transition-all duration-300 transform hover:scale-105"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 bg-[#000000] rounded-full flex items-center justify-center overflow-hidden">
-                    <Image src="/images/Occult369.jpg" alt="Occult369" width={64} height={64} className="w-full h-full object-cover rounded-full" />
-                </div>
-                <div>
-                  <h3 className="font-heading text-2xl text-[#000000] font-bold">Occult 369</h3>
-                  <p className="font-paragraph text-sm text-[#000000]/70">Spiritual Consulting</p>
-                </div>
-              </div>
-              <p className="font-paragraph text-[#000000]/80 mb-4 leading-relaxed">
-                Experience accurate numerology and astrology predictions. Transform your life through 
-                numbers and cosmic insights with our spiritual guidance and predictive analytics.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">Numerology</span>
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">Astrology</span>
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">Predictive Analytics</span>
-              </div>
-            </motion.div>
-
-            {/* OpraInfotech */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="group bg-[#B7AEA3] p-8 rounded-xl hover:bg-[#D9D2C9] transition-all duration-300 transform hover:scale-105"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 bg-[#000000] rounded-full flex items-center justify-center overflow-hidden">
-                    <Image src="/images/OpyraInfoTech.jpg" alt="OpyraInfotech" width={64} height={64} className="w-full h-full object-cover rounded-full" />
-                </div>
-                <div>
-                  <h3 className="font-heading text-2xl text-[#000000] font-bold">Opyra Infotech</h3>
-                  <p className="font-paragraph text-sm text-[#000000]/70">Digital Marketing</p>
-                </div>
-              </div>
-              <p className="font-paragraph text-[#000000]/80 mb-4 leading-relaxed">
-                Founded digital marketing agency focused on helping businesses establish strong online presence 
-                through SEO, social media marketing, and digital advertising campaigns.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">SEO</span>
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">Social Media</span>
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">Google Ads</span>
-              </div>
-            </motion.div>
-
-            {/* Gold Interio */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              viewport={{ once: true }}
-              className="group bg-[#B7AEA3] p-8 rounded-xl hover:bg-[#D9D2C9] transition-all duration-300 transform hover:scale-105"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 bg-[#000000] rounded-full flex items-center justify-center">
-                  <span className="text-[#FFFFFF] text-2xl">🏠</span>
-                </div>
-                <div>
-                  <h3 className="font-heading text-2xl text-[#000000] font-bold">Gold Interio</h3>
-                  <p className="font-paragraph text-sm text-[#000000]/70">Interior Design</p>
-                </div>
-              </div>
-              <p className="font-paragraph text-[#000000]/80 mb-4 leading-relaxed">
-                Specialized in designing and manufacturing premium modular kitchens. Managing client relationships, 
-                design consultations, and project execution for residential and commercial spaces.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">Interior Design</span>
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">Project Management</span>
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">Manufacturing</span>
-              </div>
-            </motion.div>
-
-            {/* Locotraq */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              viewport={{ once: true }}
-              className="group bg-[#B7AEA3] p-8 rounded-xl hover:bg-[#D9D2C9] transition-all duration-300 transform hover:scale-105"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 bg-[#000000] rounded-full flex items-center justify-center overflow-hidden">
-                    <Image src="/images/Locotraq.jpg" alt="Locotraq" width={64} height={64} className="w-full h-full object-cover rounded-full" />
-                </div>
-                <div>
-                  <h3 className="font-heading text-2xl text-[#000000] font-bold">Locotraq</h3>
-                  <p className="font-paragraph text-sm text-[#000000]/70">GPS Technology</p>
-                </div>
-              </div>
-              <p className="font-paragraph text-[#000000]/80 mb-4 leading-relaxed">
-                Managed supply chain and distribution of GPS tracking components and systems. 
-                Developed partnerships with technology vendors providing tracking solutions for various industries.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">GPS Technology</span>
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">Supply Chain</span>
-                <span className="px-3 py-1 bg-[#000000] text-[#FFFFFF] text-xs rounded-full">Logistics</span>
-              </div>
-            </motion.div>
+            )}
           </div>
 
           {/* Brand Stats */}
@@ -577,11 +458,11 @@ export default function HomePage() {
           >
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
               <div>
-                <div className="font-heading text-4xl lg:text-5xl text-[#FFFFFF] mb-2">6+</div>
+                <div className="font-heading text-4xl lg:text-5xl text-[#FFFFFF] mb-2">{brands.length}</div>
                 <div className="font-paragraph text-[#FFFFFF]/80">Active Brands</div>
               </div>
               <div>
-                <div className="font-heading text-4xl lg:text-5xl text-[#FFFFFF] mb-2">9+</div>
+                <div className="font-heading text-4xl lg:text-5xl text-[#FFFFFF] mb-2">10+</div>
                 <div className="font-paragraph text-[#FFFFFF]/80">Years Experience</div>
               </div>
               <div>
@@ -599,7 +480,7 @@ export default function HomePage() {
 
       {/* Enhanced CTA Section */}
       <section className="w-full py-24">
-        <div className="max-w-[100rem] mx-auto px-6">
+        <div className="max-w-400 mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}

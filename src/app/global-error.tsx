@@ -10,12 +10,7 @@ interface GlobalErrorProps {
 }
 
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
-  useEffect(() => {
-    // Log the critical error to an error reporting service
-    console.error('Critical Application Error:', error);
-    
-  }, [error]);
-
+  
   return (
     <html>
       <body>

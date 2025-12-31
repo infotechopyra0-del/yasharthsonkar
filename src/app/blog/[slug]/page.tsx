@@ -58,7 +58,6 @@ export default function BlogPostPageClient() {
           }
         }
       } catch (err) {
-        console.error('Error fetching blog:', err);
         setNotFoundState(true);
       } finally {
         setLoading(false);

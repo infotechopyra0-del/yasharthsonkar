@@ -24,7 +24,6 @@ export async function GET(
       data: project
     });
   } catch (error: any) {
-    console.error('GET /api/admin/projects/[id] error:', error);
     return NextResponse.json(
       { success: false, error: error.message || 'Failed to fetch project' },
       { status: 500 }
@@ -32,17 +31,13 @@ export async function GET(
   }
 }
 
-// PUT - Update project by ID
 export async function PUT(
   req: NextRequest,
   context: any
 ) {
   try {
     await dbConnect();
-    
     const body = await req.json();
-    
-    // Check if slug is being changed and if it's unique
     if (body.slug) {
       const id = context?.params?.id as string;
       const existingProject = await Project.findOne({ 
@@ -78,7 +73,6 @@ export async function PUT(
       message: 'Project updated successfully'
     });
   } catch (error: any) {
-    console.error('PUT /api/admin/projects/[id] error:', error);
     return NextResponse.json(
       { success: false, error: error.message || 'Failed to update project' },
       { status: 400 }
@@ -86,7 +80,6 @@ export async function PUT(
   }
 }
 
-// DELETE - Delete project by ID
 export async function DELETE(
   req: NextRequest,
   context: any
@@ -107,10 +100,7 @@ export async function DELETE(
     if (project.projectImagePublicId) {
       try {
         await deleteFromCloudinary(project.projectImagePublicId);
-        console.log('Deleted image from Cloudinary:', project.projectImagePublicId);
       } catch (error) {
-        console.error('Error deleting image from Cloudinary:', error);
-        // Continue with project deletion even if image deletion fails
       }
     }
     
@@ -121,7 +111,6 @@ export async function DELETE(
       message: 'Project deleted successfully'
     });
   } catch (error: any) {
-    console.error('DELETE /api/admin/projects/[id] error:', error);
     return NextResponse.json(
       { success: false, error: error.message || 'Failed to delete project' },
       { status: 500 }

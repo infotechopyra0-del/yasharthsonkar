@@ -23,7 +23,6 @@ export async function GET(
       data: blog
     });
   } catch (error: any) {
-    console.error('GET /api/admin/blogs/[id] error:', error);
     return NextResponse.json(
       { success: false, error: error.message || 'Failed to fetch blog' },
       { status: 500 }
@@ -69,7 +68,6 @@ export async function PUT(
       message: 'Blog updated successfully'
     });
   } catch (error: any) {
-    console.error('PUT /api/admin/blogs/[id] error:', error);
     return NextResponse.json(
       { success: false, error: error.message || 'Failed to update blog' },
       { status: 400 }
@@ -95,9 +93,7 @@ export async function DELETE(
     if (blog.featuredImagePublicId) {
       try {
         await deleteFromCloudinary(blog.featuredImagePublicId);
-        console.log('Deleted image from Cloudinary:', blog.featuredImagePublicId);
       } catch (error) {
-        console.error('Error deleting image from Cloudinary:', error);
       }
     }
     await Blog.findByIdAndDelete(id);
@@ -106,7 +102,6 @@ export async function DELETE(
       message: 'Blog deleted successfully'
     });
   } catch (error: any) {
-    console.error('DELETE /api/admin/blogs/[id] error:', error);
     return NextResponse.json(
       { success: false, error: error.message || 'Failed to delete blog' },
       { status: 500 }

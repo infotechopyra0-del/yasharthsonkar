@@ -18,13 +18,11 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   
-  // Dynamic data states
   const [contactInfo, setContactInfo] = useState<any[]>([]);
   const [socialLinks, setSocialLinks] = useState<any[]>([]);
   const [faqs, setFaqs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch all dynamic data
   useEffect(() => {
     fetchAllData();
   }, []);
@@ -33,23 +31,19 @@ export default function ContactPage() {
     try {
       setLoading(true);
       
-      // Fetch contact info
       const contactRes = await fetch('/api/admin/contact/contact-info');
       const contactData = await contactRes.json();
       setContactInfo(contactData);
 
-      // Fetch social links
       const socialRes = await fetch('/api/admin/contact/social-links');
       const socialData = await socialRes.json();
       setSocialLinks(socialData);
 
-      // Fetch FAQs
       const faqRes = await fetch('/api/admin/contact/faq');
       const faqData = await faqRes.json();
       setFaqs(faqData);
 
     } catch (error) {
-      console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
@@ -94,7 +88,6 @@ export default function ContactPage() {
 
   const isFormValid = formData.name.trim() && formData.email.trim() && formData.message.trim();
 
-  // Get icon based on type
   const getContactIcon = (type: string) => {
     switch (type) {
       case 'email': return <Mail className="w-6 h-6 text-[#FFFFFF]" />;
@@ -105,7 +98,6 @@ export default function ContactPage() {
     }
   };
 
-  // Get social icon based on platform
   const getSocialIcon = (platform: string) => {
     switch (platform.toLowerCase()) {
       case 'github': return <Github className="w-6 h-6" />;
@@ -136,7 +128,6 @@ export default function ContactPage() {
     }
   };
 
-  // Find WhatsApp info for button
   const whatsappInfo = contactInfo.find(info => info.type === 'whatsapp');
 
   return (

@@ -43,7 +43,6 @@ export default function ProjectsPage() {
           setProjects(data.success ? data.data : []);
         }
       } catch (error) {
-        console.error("Error fetching projects:", error);
       } finally {
         if (mounted) setLoading(false);
       }

@@ -18,7 +18,6 @@ export async function PUT(
     }
     return NextResponse.json({ success: true, data: service, message: 'Service updated successfully' });
   } catch (error: any) {
-    console.error('PUT /api/admin/services/[id] error:', error);
     return NextResponse.json({ success: false, error: error.message || 'Failed to update service' }, { status: 400 });
   }
 }
@@ -39,14 +38,12 @@ export async function DELETE(
       try {
         await deleteFromCloudinary(service.serviceImagePublicId);
       } catch (err) {
-        console.error('Error deleting image from Cloudinary:', err);
       }
     }
 
     await Service.findByIdAndDelete(id);
     return NextResponse.json({ success: true, message: 'Service deleted successfully' });
   } catch (error: any) {
-    console.error('DELETE /api/admin/services/[id] error:', error);
     return NextResponse.json({ success: false, error: error.message || 'Failed to delete service' }, { status: 500 });
   }
 }

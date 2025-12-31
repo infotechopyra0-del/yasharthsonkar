@@ -17,7 +17,6 @@ export async function GET(req: NextRequest) {
       count: services.length
     });
   } catch (error: any) {
-    console.error('GET /api/admin/services error:', error);
     return NextResponse.json(
       {
         success: false,

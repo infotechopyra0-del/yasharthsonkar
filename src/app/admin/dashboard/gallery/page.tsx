@@ -218,7 +218,7 @@ export default function GalleryAdminPage() {
               className="w-full sm:w-auto"
             >
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#FFFFFF] flex items-center gap-2 sm:gap-3">
-                Gallery Manager
+                Gallery Page
                 <Sparkles className="text-[#B7AEA3]" size={24} />
               </h1>
               <p className="text-[#FFFFFF]/70 font-semibold mt-1 text-sm sm:text-base">

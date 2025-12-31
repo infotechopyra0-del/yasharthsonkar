@@ -44,11 +44,11 @@ export default function Navigation() {
         boxShadow: scrolled ? '0 8px 32px rgba(0, 0, 0, 0.15)' : 'none'
       }}
     >
-      <nav className="max-w-[100rem] mx-auto px-6 py-5">
+      <nav className="max-w-400 mx-auto px-6 py-5">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="font-heading text-3xl text-[#000000] font-black hover:text-[#000000]/90 transition-all duration-300 transform hover:scale-105 tracking-tight">
-            <span className="bg-gradient-to-r from-[#000000] to-[#1A1A1A] bg-clip-text text-transparent font-extrabold">
+            <span className="bg-linear-to-r from-[#000000] to-[#1A1A1A] bg-clip-text text-transparent font-extrabold">
               Yasharth
               Sonkar
             </span>

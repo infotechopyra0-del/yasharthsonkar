@@ -48,7 +48,6 @@ export default function BlogPage() {
         const data = await res.json();
         setBlogs(data?.data ?? []);
       } catch (error) {
-        console.error(error);
         setBlogs([]);
       } finally {
         setLoading(false);
@@ -99,15 +98,15 @@ export default function BlogPage() {
           <h2 className="text-3xl font-heading mb-6">Featured Article</h2>
 
           <div className="bg-white rounded-2xl overflow-hidden shadow-xl grid lg:grid-cols-2">
-            <div className="aspect-video overflow-hidden">
-              <Image
-                src={featuredPost.featuredImage}
-                alt={featuredPost.title}
-                className="w-full h-full object-cover"
-                width={600}
-                height={400}
-              />
-            </div>
+              <div className="aspect-video overflow-hidden">
+                <Image
+                  src={featuredPost.featuredImage}
+                  alt={featuredPost.title}
+                  className="w-full h-full object-cover"
+                  width={800}
+                  height={450}
+                />
+              </div>
 
             <div className="p-8 flex flex-col justify-center">
               <div className="flex gap-4 text-sm text-black/60 mb-3">
@@ -156,13 +155,13 @@ export default function BlogPage() {
                 key={post._id}
                 className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col"
               >
-                <div className="aspect-video">
+                <div className="aspect-video overflow-hidden">
                   <Image
                     src={post.featuredImage}
                     alt={post.title}
                     className="w-full h-full object-cover"
-                    width={400}
-                    height={250}
+                    width={800}
+                    height={450}
                   />
                 </div>
 
