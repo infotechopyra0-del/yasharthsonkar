@@ -68,5 +68,6 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  // Allow fallback to JWT_SECRET if NEXTAUTH_SECRET wasn't set
+  secret: process.env.NEXTAUTH_SECRET ?? process.env.JWT_SECRET,
 };

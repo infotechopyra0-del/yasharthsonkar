@@ -14,7 +14,7 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex h-screen bg-[#B7AEA3] overflow-hidden">
+    <div className="flex h-screen bg-[#B7AEA3] overflow-hidden" data-scroll-behavior="smooth">
       {/* Sidebar */}
       <AdminSidebar />
       {/* Main Content */}
