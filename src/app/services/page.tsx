@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Check, Loader2 } from 'lucide-react';
 import Navigation from '@/components/navigation';
+import Footer from '@/components/footer';
 
 interface Service {
   _id: string;
@@ -82,7 +83,6 @@ export default function ServicesPage() {
     <div className="min-h-screen bg-[#B7AEA3]">
       {/* Navigation */}
       <Navigation />
-      
       {/* Hero Section */}
       <section className="w-full max-w-400 mx-auto px-6 py-20 lg:py-32">
         <motion.div
@@ -329,6 +329,9 @@ export default function ServicesPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

@@ -25,21 +25,10 @@ const GallerySchema = new mongoose.Schema({
     required: [true, 'Description is required'],
     trim: true
   },
-  likes: {
-    type: Number,
-    default: 0,
-    min: 0
-  },
-  views: {
-    type: Number,
-    default: 0,
-    min: 0
-  }
 }, { 
   timestamps: true 
 });
 
-// Index for faster queries
 GallerySchema.index({ category: 1, createdAt: -1 });
 
 export default mongoose.models.Gallery || mongoose.model('Gallery', GallerySchema);

@@ -8,6 +8,7 @@ import {
     FileText, Clock, Star, Layers
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { uploadToCloudinary, deleteFromCloudinary } from '@/lib/cloudinary';
 import {
     AlertDialog,
     AlertDialogTrigger,
@@ -61,7 +62,7 @@ export default function BlogAdminDashboard() {
         excerpt: '',
         content: '',
         featuredImage: '',
-        category: 'Web Development',
+        category: 'Development',
         tags: [],
         author: { name: 'Admin' },
         readTime: 5,
@@ -107,49 +108,24 @@ export default function BlogAdminDashboard() {
         if (!file) return;
 
         setUploading(true);
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', 'your_upload_preset'); // Replace with your Cloudinary preset
-
         try {
-            const res = await fetch(
-                `https://api.cloudinary.com/v1_1/your_cloud_name/image/upload`, // Replace with your cloud name
-                {
-                    method: 'POST',
-                    body: formData,
-                }
-            );
-
-            const data = await res.json();
-
-            if (data.secure_url) {
-                if (currentBlog.featuredImagePublicId) {
-                    await deleteCloudinaryImage(currentBlog.featuredImagePublicId);
-                }
-
-                setCurrentBlog({
-                    ...currentBlog,
-                    featuredImage: data.secure_url,
-                    featuredImagePublicId: data.public_id,
-                });
-                toast.success('Image uploaded! 📸');
+            if (currentBlog.featuredImagePublicId) {
+                await deleteFromCloudinary(currentBlog.featuredImagePublicId);
             }
+
+            const { url, publicId } = await uploadToCloudinary(file);
+
+            setCurrentBlog({
+                ...currentBlog,
+                featuredImage: url,
+                featuredImagePublicId: publicId,
+            });
+            toast.success('Image uploaded! 📸');
         } catch (error) {
+            console.error('Upload error:', error);
             toast.error('Image upload failed');
         } finally {
             setUploading(false);
-        }
-    };
-
-    const deleteCloudinaryImage = async (publicId: string) => {
-        try {
-            await fetch('/api/cloudinary/delete', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ publicId }),
-            });
-        } catch (error) {
-            console.error('Failed to delete image from Cloudinary:', error);
         }
     };
 
@@ -330,7 +306,7 @@ export default function BlogAdminDashboard() {
                                         excerpt: '',
                                         content: '',
                                         featuredImage: '',
-                                        category: 'Web Development',
+                                        category: 'Development',
                                         tags: [],
                                         author: { name: 'Admin' },
                                         readTime: 5,
@@ -498,6 +474,7 @@ export default function BlogAdminDashboard() {
                                             slug: generateSlug(title)
                                         });
                                     }}
+                                    required
                                     className="w-full px-4 py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                                     placeholder="Enter blog title"
                                 />
@@ -514,6 +491,7 @@ export default function BlogAdminDashboard() {
                                     onChange={(e) => setCurrentBlog({ ...currentBlog, slug: e.target.value })}
                                     className="w-full px-4 py-3 text-sm sm:text-base border-2 border-[#000000]/20 focus:border-[#000000] outline-none rounded-md"
                                     placeholder="blog-url-slug"
+                                    required
                                 />
                             </div>
 
@@ -543,7 +521,7 @@ export default function BlogAdminDashboard() {
                                             type="button"
                                             onClick={async () => {
                                                 if (currentBlog.featuredImagePublicId) {
-                                                    await deleteCloudinaryImage(currentBlog.featuredImagePublicId);
+                                                    await deleteFromCloudinary(currentBlog.featuredImagePublicId);
                                                 }
                                                 setCurrentBlog({ ...currentBlog, featuredImage: '', featuredImagePublicId: '' });
                                             }}

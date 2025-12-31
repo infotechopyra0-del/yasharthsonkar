@@ -17,6 +17,8 @@ export function Image({ src, alt, width, height, ...props }: ImageProps) {
         src={src}
         alt={alt}
         {...forward}
+        // If caller set priority, ensure loading is eager for LCP
+        loading={forward.priority ? 'eager' : forward.loading}
       />
     );
   }
@@ -32,6 +34,8 @@ export function Image({ src, alt, width, height, ...props }: ImageProps) {
       width={w}
       height={h}
       {...props}
+      // If caller set priority, ensure loading is eager for LCP
+      loading={(props as any).priority ? 'eager' : (props as any).loading}
     />
   );
 }

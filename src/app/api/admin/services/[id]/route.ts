@@ -5,13 +5,14 @@ import { deleteFromCloudinary } from '@/lib/cloudinary';
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: any
 ) {
   try {
     await dbConnect();
     const body = await req.json();
 
-    const service = await Service.findByIdAndUpdate(params.id, body, { new: true, runValidators: true });
+    const id = context?.params?.id as string;
+    const service = await Service.findByIdAndUpdate(id, body, { new: true, runValidators: true });
     if (!service) {
       return NextResponse.json({ success: false, error: 'Service not found' }, { status: 404 });
     }
@@ -24,11 +25,12 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: any
 ) {
   try {
     await dbConnect();
-    const service = await Service.findById(params.id);
+    const id = context?.params?.id as string;
+    const service = await Service.findById(id);
     if (!service) {
       return NextResponse.json({ success: false, error: 'Service not found' }, { status: 404 });
     }
@@ -41,7 +43,7 @@ export async function DELETE(
       }
     }
 
-    await Service.findByIdAndDelete(params.id);
+    await Service.findByIdAndDelete(id);
     return NextResponse.json({ success: true, message: 'Service deleted successfully' });
   } catch (error: any) {
     console.error('DELETE /api/admin/services/[id] error:', error);

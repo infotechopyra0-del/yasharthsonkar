@@ -82,7 +82,7 @@ export default function WhatsAppChat() {
             <div className="p-6 bg-gray-50">
               <div className="bg-white rounded-lg p-4 shadow-sm mb-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center shrink-0">
                     <span className="text-green-600 text-sm">👋</span>
                   </div>
                   <div>

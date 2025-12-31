@@ -14,7 +14,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-[#B7AEA3]">
       <Navigation />
       {/* Hero Section - Enhanced and Enlarged */}
-      <section className="w-full max-w-[120rem] mx-auto px-6 py-24 lg:py-40">
+      <section className="w-full max-w-480 mx-auto px-6 py-24 lg:py-40">
         <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-center">
           {/* Left Content - Enhanced */}
           <motion.div
@@ -111,6 +111,7 @@ export default function HomePage() {
                   alt="Modern workspace setup with laptop and development tools"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   width={400}
+                  priority
                 />
               </div>
               <motion.div 
@@ -142,6 +143,7 @@ export default function HomePage() {
                   alt="AI development and machine learning workspace"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   width={400}
+                  priority
                 />
               </div>
             </div>
@@ -213,6 +215,7 @@ export default function HomePage() {
                 alt="Yasharth Sonkar - Professional portrait"
                 className="w-full h-full object-cover"
                 width={600}
+                priority
               />
             </motion.div>
           </div>

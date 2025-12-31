@@ -6,11 +6,12 @@ import { deleteFromCloudinary } from '@/lib/cloudinary';
 {/* GET - Fetch Blog By ID */}
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: any }
 ) {
   try {
     await dbConnect();
-    const blog = await Blog.findById(params.id);
+    const { id } = await params;
+    const blog = await Blog.findById(id);
     if (!blog) {
       return NextResponse.json(
         { success: false, error: 'Blog not found' },
@@ -33,15 +34,16 @@ export async function GET(
 {/* PUT - Update Blog By ID */}
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: any }
 ) {
   try {
     await dbConnect();
     const body = await req.json();
+    const { id } = await params;
     if (body.slug) {
       const existingBlog = await Blog.findOne({ 
         slug: body.slug,
-        _id: { $ne: params.id }
+        _id: { $ne: id }
       });
       if (existingBlog) {
         return NextResponse.json(
@@ -51,7 +53,7 @@ export async function PUT(
       }
     }
     const blog = await Blog.findByIdAndUpdate(
-      params.id,
+      id,
       body,
       { new: true, runValidators: true }
     );
@@ -78,11 +80,12 @@ export async function PUT(
 {/* DELETE - Delete Blog By ID */}
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: any }
 ) {
   try {
     await dbConnect();
-    const blog = await Blog.findById(params.id);
+    const { id } = await params;
+    const blog = await Blog.findById(id);
     if (!blog) {
       return NextResponse.json(
         { success: false, error: 'Blog not found' },
@@ -97,7 +100,7 @@ export async function DELETE(
         console.error('Error deleting image from Cloudinary:', error);
       }
     }
-    await Blog.findByIdAndDelete(params.id);
+    await Blog.findByIdAndDelete(id);
     return NextResponse.json({
       success: true,
       message: 'Blog deleted successfully'

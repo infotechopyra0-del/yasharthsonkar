@@ -5,11 +5,12 @@ import Blog from '@/models/Blog';
 {/* GET - Fetch Blog By Slug */}
 export async function GET(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: any }
 ) {
   try {
     await dbConnect();
-    const blog = await Blog.findOne({ slug: params.slug });
+    const { slug } = await params;
+    const blog = await Blog.findOne({ slug });
     if (!blog) {
       return NextResponse.json(
         { success: false, error: 'Blog not found' },

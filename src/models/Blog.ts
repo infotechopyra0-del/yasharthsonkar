@@ -116,17 +116,15 @@ const BlogSchema: Schema = new Schema(
   }
 );
 
-(BlogSchema as any).pre('save', function (this: IBlog & Document, next: (err?: any) => void) {
+(BlogSchema as any).pre('save', function (this: IBlog & Document) {
   if (this.isModified('title') && !this.slug) {
     this.slug = (this.title as string)
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '');
   }
-  next();
 });
 
-BlogSchema.index({ slug: 1 });
 BlogSchema.index({ category: 1 });
 BlogSchema.index({ isPublished: 1 });
 BlogSchema.index({ publishDate: -1 });

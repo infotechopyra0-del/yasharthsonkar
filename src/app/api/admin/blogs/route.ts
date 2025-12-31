@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
     if (existingBlog) {
       return NextResponse.json(
         { success: false, error: 'A blog with this slug already exists' },
-        { status: 400 }
+        { status: 409 }
       );
     }
     const blog = await Blog.create(body);
@@ -62,9 +62,16 @@ export async function POST(req: NextRequest) {
     }, { status: 201 });
   } catch (error: any) {
     console.error('POST /api/admin/blogs error:', error);
+    // Handle duplicate-key (unique index) errors from MongoDB
+    if (error && (error.code === 11000 || error.name === 'MongoServerError')) {
+      return NextResponse.json(
+        { success: false, error: 'Duplicate key error: a blog with this slug already exists' },
+        { status: 409 }
+      );
+    }
     return NextResponse.json(
       { success: false, error: error.message || 'Failed to create blog' },
-      { status: 400 }
+      { status: 500 }
     );
   }
 }
